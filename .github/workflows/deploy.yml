@@ -9,46 +9,48 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Decode SSH Key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" | base64 -d > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-
-      - name: Setup SSH
+      - name: 🔐 Setup SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
-          log-public-key: false
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-
-      - name: Add Known Hosts
+      - name: 🚀 Deploy and Build on Server
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          DEPLOY_PATH: "/home/gespera/web/yanginperde.com"
         run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          # Sunucuya dosyaları gönder
+          rsync -avz --delete \
+            --exclude 'node_modules' \
+            --exclude '.next' \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '.env.local' \
+            --exclude '*.log' \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./ ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}/app/
 
-      - name: Deploy with rsync
-        run: |
-          rsync -avz --exclude 'node_modules' --exclude '.git' --exclude '.github' --exclude '.env.local' ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/gespera/web/yanginperde.com/app/
-
-      - name: Restart Application
-        run: |
-          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            cd /home/gespera/web/yanginperde.com/app
-            echo "📥 Installing dependencies..."
+          # Sunucuda build ve başlatma
+          ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} << ENDSSH
+            set -e
+            cd ${DEPLOY_PATH}/app
+            
+            echo "📦 Dependencies yükleniyor..."
+            export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+            
             npm install --legacy-peer-deps --production=false
-            echo "🔨 Building application..."
+            
+            echo "🔨 Build alınıyor..."
             npm run build
-            echo "🔄 Restarting application..."
+            
+            echo "� Uygulama PM2 ile yeniden başlatılıyor..."
             if command -v pm2 &> /dev/null; then
                 pm2 restart yanginperde || pm2 start npm --name "yanginperde" -- start
                 pm2 save
             else
                 echo "⚠️ PM2 not found, manual restart required"
             fi
-          EOF
+            
+            echo "✅ Deploy işlemi tamamlandı."
+          ENDSSH
