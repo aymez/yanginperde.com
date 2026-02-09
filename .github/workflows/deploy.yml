@@ -1,0 +1,53 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy files via scp
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT || 22 }}
+          source: "."
+          target: "/home/gespera/web/yanginperde.com/app"
+          rm: false
+          strip_components: 0
+          exclude: "node_modules,.git,.github,.env.local,.env*.local,deploy*.sh,README.md,*.log"
+
+      - name: Execute remote commands via ssh
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT || 22 }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            
+            cd /home/gespera/web/yanginperde.com/app
+            
+            echo "📥 Installing dependencies..."
+            npm install --production=false
+            
+            echo "🔨 Building application..."
+            npm run build
+            
+            echo "🔄 Restarting application..."
+            if command -v pm2 &> /dev/null; then
+                pm2 restart yanginperde || pm2 start npm --name "yanginperde" -- start
+                pm2 save
+            else
+                echo "⚠️ PM2 not found, manual restart required"
+            fi
