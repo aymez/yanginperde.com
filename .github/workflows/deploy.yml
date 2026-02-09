@@ -47,9 +47,9 @@ jobs:
             echo "🔨 Build alınıyor..."
             npm run build
             
-            echo "� Uygulama PM2 ile yeniden başlatılıyor..."
+            echo "🚀 Uygulama PM2 ile yeniden başlatılıyor..."
             if command -v pm2 &> /dev/null; then
-                pm2 restart yanginperde || pm2 start npm --name "yanginperde" -- start
+                pm2 restart yanginperde || pm2 start npm --name "yanginperde" -- run start
                 pm2 save
             else
                 echo "⚠️ PM2 not found, manual restart required"
