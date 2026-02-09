@@ -39,7 +39,7 @@ jobs:
             cd /home/gespera/web/yanginperde.com/app
             
             echo "📥 Installing dependencies..."
-            npm install --production=false
+            npm install --legacy-peer-deps --production=false
             
             echo "🔨 Building application..."
             npm run build
