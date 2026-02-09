@@ -92,7 +92,8 @@ export type ProjectCategory =
     | "residential"
     | "commercial"
     | "hotel"
-    | "villa";
+    | "villa"
+    | "office";
 
 export interface Project {
     id: string;
