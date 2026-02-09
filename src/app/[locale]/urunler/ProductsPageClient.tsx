@@ -42,14 +42,13 @@ export default function ProductsPageClient() {
                 {/* Full Width Background Image */}
                 <div className="absolute inset-0">
                     <Image
-                        src="/images/gespera/products.webp"
-                        alt="GESPERA Ürün Koleksiyonu"
+                        src="/images/placeholder-product.jpg"
+                        alt="Yangın Perde Ürün Koleksiyonu"
                         fill
                         priority
                         quality={90}
                         className="object-cover"
                         sizes="100vw"
-                        unoptimized
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-r from-cream/95 via-cream/70 to-transparent" />
@@ -96,8 +95,8 @@ export default function ProductsPageClient() {
                                     transition={{ duration: 0.6, delay: 0.4 }}
                                     className="text-anthracite text-base lg:text-lg leading-relaxed max-w-md"
                                 >
-                                    {locale === "tr" 
-                                        ? "Avrupa standartlarında üretim kalitesiyle, modern mimari projeler için gölgelendirme sistemleri üretiyoruz." 
+                                    {locale === "tr"
+                                        ? "Avrupa standartlarında üretim kalitesiyle, modern mimari projeler için gölgelendirme sistemleri üretiyoruz."
                                         : "We manufacture shading systems for modern architectural projects with European standard production quality."}
                                 </motion.p>
                             </motion.div>

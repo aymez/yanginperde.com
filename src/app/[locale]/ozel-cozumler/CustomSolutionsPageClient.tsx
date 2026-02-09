@@ -38,7 +38,7 @@ export default function CustomSolutionsPageClient() {
             <section className="relative min-h-[65vh] lg:min-h-[70vh] overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <Image
-                        src="/images/gespera/ozel-cozumler.webp"
+                        src="/images/placeholder-product.jpg"
                         alt={t("title")}
                         fill
                         priority

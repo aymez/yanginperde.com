@@ -28,7 +28,7 @@ export default function AboutPageClient({ locale }: AboutPageClientProps) {
             <section className="relative min-h-[65vh] lg:min-h-[70vh] overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <Image
-                        src="/images/gespera/products.webp"
+                        src="/images/placeholder-product.jpg"
                         alt="Hakkımızda"
                         fill
                         priority

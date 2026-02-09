@@ -8,7 +8,7 @@ import { usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Logo from "./Logo";
-import { getOutdoorCategories, getIndoorCategories, getProductSlugByCategory } from "@/data/products";
+import { getFireSystemCategories, getSmokeSystemCategories, getProductSlugByCategory } from "@/data/products";
 import { Locale } from "@/i18n/config";
 
 function getLocalized<T>(obj: Record<string, T> | undefined, locale: Locale): T | undefined {
@@ -28,8 +28,8 @@ export default function MobileMenu({ onClose, onSearch }: MobileMenuProps) {
     const locale = useLocale() as Locale;
     const [isProductsOpen, setIsProductsOpen] = useState(false);
 
-    const outdoorCategories = getOutdoorCategories();
-    const indoorCategories = getIndoorCategories();
+    const fireSystemCategories = getFireSystemCategories();
+    const smokeSystemCategories = getSmokeSystemCategories();
 
     const isActive = (href: string) => {
         if (href === "/") return pathname === "/";
@@ -37,9 +37,7 @@ export default function MobileMenu({ onClose, onSearch }: MobileMenuProps) {
     };
 
     const isProductsActive =
-        pathname.includes("/urunler") ||
-        pathname.includes("/dis-mekan") ||
-        pathname.includes("/ic-mekan");
+        pathname.includes("/urunler");
 
     return (
         <motion.div
@@ -151,7 +149,7 @@ export default function MobileMenu({ onClose, onSearch }: MobileMenuProps) {
                                         {/* Dış Mekan */}
                                         <div className="pt-2">
                                             <Link
-                                                href="/dis-mekan"
+                                                href="/urunler"
                                                 onClick={onClose}
                                                 className="flex items-center gap-2 text-base font-semibold text-primary mb-2 hover:underline"
                                             >
@@ -166,10 +164,10 @@ export default function MobileMenu({ onClose, onSearch }: MobileMenuProps) {
                                                     <path d="m6.34 17.66-1.41 1.41" />
                                                     <path d="m19.07 4.93-1.41 1.41" />
                                                 </svg>
-                                                {tCat("outdoor")}
+                                                {tCat("fireSystems")}
                                             </Link>
                                             <div className="space-y-0.5">
-                                                {outdoorCategories.map((cat) => {
+                                                {fireSystemCategories.map((cat) => {
                                                     const productSlug = getProductSlugByCategory(cat.slug);
                                                     return (
                                                         <Link
@@ -188,7 +186,7 @@ export default function MobileMenu({ onClose, onSearch }: MobileMenuProps) {
                                         {/* İç Mekan */}
                                         <div className="pt-2">
                                             <Link
-                                                href="/ic-mekan"
+                                                href="/urunler"
                                                 onClick={onClose}
                                                 className="flex items-center gap-2 text-base font-semibold text-primary mb-2 hover:underline"
                                             >
@@ -196,10 +194,10 @@ export default function MobileMenu({ onClose, onSearch }: MobileMenuProps) {
                                                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                                                     <polyline points="9 22 9 12 15 12 15 22" />
                                                 </svg>
-                                                {tCat("indoor")}
+                                                {tCat("smokeSystems")}
                                             </Link>
                                             <div className="space-y-0.5">
-                                                {indoorCategories.map((cat) => {
+                                                {smokeSystemCategories.map((cat) => {
                                                     const productSlug = getProductSlugByCategory(cat.slug);
                                                     return (
                                                         <Link

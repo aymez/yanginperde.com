@@ -28,30 +28,23 @@ export interface LocalizedStringArray {
 // ================================
 
 // Ana Kategoriler
-export type MainCategory = "dis-mekan" | "ic-mekan";
+export type MainCategory = "yangin-sistemleri" | "duman-sistemleri";
 
-// Dış Mekan Ürün Kategorileri
-export type OutdoorCategory =
-    | "dikey-zip-perde"
-    | "yatay-zip-perde"
-    | "sineklik-sistemleri"
-    | "pergola-sistemleri"
-    | "tente-sistemleri";
+// Yangın Sistemleri Kategorileri
+export type FireSystemCategory =
+    | "yangin-perdesi-e"
+    | "yangin-perdesi-ew"
+    | "yangin-kapisi"
+    | "otomatik-yangin-perdesi"
+    | "konveyor-sistem";
 
-// İç Mekan Ürün Kategorileri
-export type IndoorCategory =
-    | "stor-perdeler"
-    | "screen-stor-perdeler"
-    | "blackout-perdeler"
-    | "zebra-perdeler"
-    | "jaluzi-perdeler"
-    | "dikey-perdeler"
-    | "mefrusat-perdeler"
-    | "hastane-oda-perdeleri"
-    | "projeksiyon-perdeleri";
+// Duman Sistemleri Kategorileri
+export type SmokeSystemCategory =
+    | "otomatik-duman-perdesi"
+    | "sabit-duman-perdesi";
 
 // Tüm Ürün Kategorileri
-export type ProductCategory = OutdoorCategory | IndoorCategory;
+export type ProductCategory = FireSystemCategory | SmokeSystemCategory;
 
 // Legacy support (eski kategori isimlerini yenilere map etmek için)
 export type LegacyProductCategory =

@@ -8,14 +8,14 @@ import { Header, Footer } from "@/components/layout";
 import { COMPANY_INFO } from "@/lib/constants";
 import "../globals.css";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://gespera.com";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yanginperde.com";
 
 export const metadata: Metadata = {
     metadataBase: new URL(baseUrl),
     icons: {
         icon: [
             { url: "/favicon.svg", type: "image/svg+xml" },
-            { url: "/images/gespera/favicon.webp", sizes: "32x32", type: "image/png" },
+            { url: "/icon.svg", type: "image/svg+xml" },
         ],
         apple: "/apple-icon.svg",
     },
@@ -25,10 +25,10 @@ export const metadata: Metadata = {
 const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "GESPERA", // TODO: Update to YANGIN PERDE later
+    name: "YANGIN PERDE",
     legalName: COMPANY_INFO.legalName,
-    url: "https://gespera.com",
-    logo: "https://gespera.com/images/logo-gespera.png",
+    url: "https://yanginperde.com",
+    logo: "https://yanginperde.com/images/logo.svg",
     contactPoint: {
         "@type": "ContactPoint",
         telephone: COMPANY_INFO.phone,

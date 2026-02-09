@@ -1,6 +1,6 @@
-# GESPERA - Premium Gölgelendirme Sistemleri
+# YANGIN PERDE - Premium Gölgelendirme Sistemleri
 
-Premium kurumsal web sitesi - Zip screen, stor perde, tente ve pergola sistemleri.
+Premium kurumsal web sitesi - Yangın perdesi, duman perdesi ve konveyör sistemleri.
 
 ## 🚀 Teknolojiler
 
@@ -13,7 +13,7 @@ Premium kurumsal web sitesi - Zip screen, stor perde, tente ve pergola sistemler
 
 ## 📁 Proje Yapısı
 
-```
+\`\`\`
 src/
 ├── app/
 │   ├── [locale]/          # Dil bazlı sayfalar
@@ -34,11 +34,11 @@ src/
 ├── i18n/                  # Çeviri dosyaları
 ├── lib/                   # Utility fonksiyonlar
 └── types/                 # TypeScript tipleri
-```
+\`\`\`
 
 ## 🛠️ Kurulum
 
-```bash
+\`\`\`bash
 # Bağımlılıkları yükle
 npm install
 
@@ -50,34 +50,34 @@ npm run build
 
 # Production sunucusu
 npm run start
-```
+\`\`\`
 
 ## 🌐 Dil Desteği
 
-- Türkçe (varsayılan): `/`
-- İngilizce: `/en`
+- Türkçe (varsayılan): \`/\`
+- İngilizce: \`/en\`
 
 ## 📱 Sayfalar
 
 | Sayfa | TR URL | EN URL |
 |-------|--------|--------|
-| Ana Sayfa | `/` | `/en` |
-| Ürünler | `/urunler` | `/en/urunler` |
-| Ürün Detay | `/urunler/[slug]` | `/en/urunler/[slug]` |
-| Hakkımızda | `/hakkimizda` | `/en/hakkimizda` |
-| Projeler | `/projeler` | `/en/projeler` |
-| İletişim | `/iletisim` | `/en/iletisim` |
-| Gizlilik | `/gizlilik-politikasi` | `/en/gizlilik-politikasi` |
-| Şartlar | `/kullanim-sartlari` | `/en/kullanim-sartlari` |
+| Ana Sayfa | \`/\` | \`/en\` |
+| Ürünler | \`/urunler\` | \`/en/urunler\` |
+| Ürün Detay | \`/urunler/[slug]\` | \`/en/urunler/[slug]\` |
+| Hakkımızda | \`/hakkimizda\` | \`/en/hakkimizda\` |
+| Projeler | \`/projeler\` | \`/en/projeler\` |
+| İletişim | \`/iletisim\` | \`/en/iletisim\` |
+| Gizlilik | \`/gizlilik-politikasi\` | \`/en/gizlilik-politikasi\` |
+| Şartlar | \`/kullanim-sartlari\` | \`/en/kullanim-sartlari\` |
 
 ## 🎨 Renk Paleti
 
-```css
+\`\`\`css
 /* Ana Renkler */
 --gold-primary: #C4A35A;    /* Altın/Bronz */
 --cream: #F5F0E8;           /* Krem */
 --anthracite: #2D2D2D;      /* Antrasit */
-```
+\`\`\`
 
 ## ⚡ Performans Hedefleri
 
@@ -88,9 +88,9 @@ npm run start
 
 ## 📧 İletişim
 
-- **Website:** [gespera.com](https://gespera.com)
-- **Email:** info@gespera.com
-- **Telefon:** 0212 123 45 67
+- **Website:** [yanginperde.com](https://yanginperde.com)
+- **Email:** info@yanginperde.com
+- **Telefon:** 0212 294 82 80
 
 ## 🤖 Otomatik Deploy (CI/CD)
 
@@ -101,7 +101,7 @@ Bu proje **GitHub Actions** kullanarak otomatik deploy yapar:
 
 ### Kurulum
 
-Detaylı kurulum rehberi için: [`.github/DEPLOY_SETUP.md`](.github/DEPLOY_SETUP.md)
+Detaylı kurulum rehberi için: [\`.github/DEPLOY_SETUP.md\`](.github/DEPLOY_SETUP.md)
 
 **Hızlı Başlangıç:**
 1. GitHub repository > Settings > Secrets and variables > Actions
@@ -119,59 +119,59 @@ Detaylı kurulum rehberi için: [`.github/DEPLOY_SETUP.md`](.github/DEPLOY_SETUP
 ### Hızlı Deploy
 
 1. **Deploy script'ini çalıştırın:**
-```bash
+\`\`\`bash
 ./deploy.sh user@server.com /path/to/deploy
-```
+\`\`\`
 
 Örnek:
-```bash
-./deploy.sh root@192.168.1.100 /var/www/gespera
-```
+\`\`\`bash
+./deploy.sh root@192.168.1.100 /var/www/yanginperde
+\`\`\`
 
 ### Manuel Deploy
 
 1. **Sunucuya bağlanın:**
-```bash
+\`\`\`bash
 ssh user@server.com
-```
+\`\`\`
 
 2. **Repository'yi klonlayın:**
-```bash
+\`\`\`bash
 cd /var/www
-git clone git@github.com:aymez/gespera.git gespera
-cd gespera
-```
+git clone git@github.com:aymez/yanginperde.com.git yanginperde
+cd yanginperde
+\`\`\`
 
 3. **Environment variables oluşturun:**
-```bash
+\`\`\`bash
 nano .env.local
-```
+\`\`\`
 
 Gerekli değişkenler:
-```env
-NEXT_PUBLIC_SITE_URL=https://gespera.com
+\`\`\`env
+NEXT_PUBLIC_SITE_URL=https://yanginperde.com
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
-```
+\`\`\`
 
 4. **Dependencies yükleyin ve build alın:**
-```bash
+\`\`\`bash
 npm install
 npm run build
-```
+\`\`\`
 
 5. **PM2 ile başlatın:**
-```bash
-pm2 start npm --name "gespera" -- start
+\`\`\`bash
+pm2 start npm --name "yanginperde" -- start
 pm2 save
 pm2 startup  # Sistem açılışında otomatik başlatma için
-```
+\`\`\`
 
 ### Nginx Reverse Proxy Örneği
 
-```nginx
+\`\`\`nginx
 server {
     listen 80;
-    server_name gespera.com www.gespera.com;
+    server_name yanginperde.com www.yanginperde.com;
 
     location / {
         proxy_pass http://localhost:3000;
@@ -185,13 +185,13 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
-```
+\`\`\`
 
 ### SSL Sertifikası (Let's Encrypt)
 
-```bash
-sudo certbot --nginx -d gespera.com -d www.gespera.com
-```
+\`\`\`bash
+sudo certbot --nginx -d yanginperde.com -d www.yanginperde.com
+\`\`\`
 
 ## 📝 Lisans
 

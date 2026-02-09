@@ -34,8 +34,8 @@ export default async function QuotePage({
                 {/* Full Width Background Image */}
                 <div className="absolute inset-0 z-0">
                     <Image
-                        src="/images/gespera/teklif-hero.webp"
-                        alt={`${t("title")} - GESPERA`}
+                        src="/images/placeholder-product.jpg"
+                        alt={`${t("title")} - YANGIN PERDE`}
                         fill
                         priority
                         quality={90}

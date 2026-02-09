@@ -8,8 +8,8 @@
         "home": "Ana Sayfa",
         "products": "Ürünler",
         "allProducts": "Tüm Ürünleri Gör",
-        "outdoor": "Yangın Sistemleri",
-        "indoor": "Duman Sistemleri",
+        "fireSystems": "Yangın Sistemleri",
+        "smokeSystems": "Duman Sistemleri",
         "customSolutions": "Özel Çözümler",
         "about": "Hakkımızda",
         "projects": "Projeler",
@@ -52,8 +52,8 @@
         "subtitle": "Her ihtiyaca uygun yangın ve duman kontrol çözümleri",
         "viewAll": "Tümünü Gör",
         "viewMore": "İncele",
-        "outdoor": "Yangın Sistemleri",
-        "indoor": "Duman Sistemleri",
+        "fireSystems": "Yangın Sistemleri",
+        "smokeSystems": "Duman Sistemleri",
         "systemCatalog": "Sistem Kataloğu",
         "engineered": "Mühendislik",
         "solutions": "Çözümleri",
@@ -433,37 +433,5 @@
         "learnMore": "Daha Fazla",
         "seeAll": "Tümünü Gör",
         "readMore": "Devamını Oku"
-    },
-    "outdoor": {
-        "meta": {
-            "title": "Yangın Perdeleri | YANGIN PERDE",
-            "description": "Yangın Perdesi, Duman Perdesi, Konveyör Sistemler. Yangın güvenliği için profesyonel çözümler."
-        },
-        "title": "Yangın Sistemleri",
-        "subtitle": "EN 12101-1 standartlarına uygun, E120 ve DH60 sınıfı sertifikalı yangın ve duman kontrol sistemleri ile yapılarınızı güvence altına alın.",
-        "getQuote": "Teklif Alın",
-        "productsTitle": "Yangın Güvenliği İçin Sertifikalı Çözümler",
-        "ctaPrimary": "SİSTEMLERİMİZ",
-        "ctaSecondary": "TEKNİK DETAYLAR",
-        "badge": "YANGIN GÜVENLİK TEKNOLOJİLERİ",
-        "viewDetails": "Ürün Detayları",
-        "ctaTitle": "Güvenilir, estetik ve dayanıklı çözümler.",
-        "ctaSubtitle": "Profesyonel ekibimiz sizin için en doğru çözümü belirlesin.",
-        "ctaButton": "Ücretsiz Danışmanlık Alın"
-    },
-    "indoor": {
-        "meta": {
-            "title": "Duman Kontrol Sistemleri | YANGIN PERDE",
-            "description": "Sabit Duman Perdeleri, Otomatik Duman Perdeleri. Duman tahliyesi ve kontrolü için profesyonel çözümler."
-        },
-        "title": "Duman Kontrol Sistemleri",
-        "subtitle": "Sabit Duman Perdeleri, Otomatik Duman Perdeleri ve Duman Tahliye Sistemleri",
-        "getQuote": "Teklif Alın",
-        "productsTitle": "Duman Yayılımını Önleyen Sistemler",
-        "productsSubtitle": "Yangın anında dumanın yayılmasını önleyerek güvenli kaçış koridorları oluşturan duman kontrol sistemlerimizi keşfedin.",
-        "viewDetails": "Ürün Detayları",
-        "ctaTitle": "Yaşam alanlarınız için güvenli ve fonksiyonel çözümler.",
-        "ctaSubtitle": "Uzman ekibimiz mekanınıza en uygun duman kontrol sistemini belirlesin.",
-        "ctaButton": "Ücretsiz Danışmanlık Alın"
     }
 }

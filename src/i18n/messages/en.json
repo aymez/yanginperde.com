@@ -8,8 +8,8 @@
         "home": "Home",
         "products": "Products",
         "allProducts": "View All Products",
-        "outdoor": "Fire Systems",
-        "indoor": "Smoke Systems",
+        "fireSystems": "Fire Systems",
+        "smokeSystems": "Smoke Systems",
         "customSolutions": "Custom Solutions",
         "about": "About Us",
         "projects": "Projects",
@@ -45,8 +45,8 @@
         "subtitle": "Fire and smoke control solutions for every need",
         "viewAll": "View All",
         "viewMore": "Learn More",
-        "outdoor": "Fire Systems",
-        "indoor": "Smoke Systems"
+        "fireSystems": "Fire Systems",
+        "smokeSystems": "Smoke Systems"
     },
     "whyUs": {
         "description": "We design systems that don't just meet standards, but redefine them. Reliability at 1100°C is not an option; it is our baseline.",
@@ -292,35 +292,5 @@
         "learnMore": "Learn More",
         "seeAll": "See All",
         "readMore": "Read More"
-    },
-    "outdoor": {
-        "meta": {
-            "title": "Fire Curtains | YANGIN PERDE",
-            "description": "Fire Curtain, Smoke Curtain, Conveyor Systems. Professional solutions for fire safety."
-        },
-        "title": "Fire Systems",
-        "subtitle": "Fire Curtain, Smoke Curtain, Automatic Curtains and Conveyor Systems",
-        "getQuote": "Get Quote",
-        "productsTitle": "Certified Solutions for Fire Safety",
-        "productsSubtitle": "Ensure safety of life and property with our international standard compliant, tested and certified fire and smoke curtain systems.",
-        "viewDetails": "Product Details",
-        "ctaTitle": "Reliable, elegant and durable solutions.",
-        "ctaSubtitle": "Let our professional team determine the best solution for you.",
-        "ctaButton": "Request Free Consultation"
-    },
-    "indoor": {
-        "meta": {
-            "title": "Smoke Control Systems | YANGIN PERDE",
-            "description": "Static Smoke Curtains, Automatic Smoke Curtains. Professional solutions for smoke evacuation and control."
-        },
-        "title": "Smoke Control Systems",
-        "subtitle": "Static Smoke Curtains, Automatic Smoke Curtains and Smoke Evacuation Systems",
-        "getQuote": "Get Quote",
-        "productsTitle": "Systems Preventing Smoke Spread",
-        "productsSubtitle": "Discover our smoke control systems that create safe escape corridors by preventing smoke spread during fire.",
-        "viewDetails": "Product Details",
-        "ctaTitle": "Safe and functional solutions for your living spaces.",
-        "ctaSubtitle": "Let our expert team determine the most suitable smoke control system for your space.",
-        "ctaButton": "Request Free Consultation"
     }
 }

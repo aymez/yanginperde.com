@@ -6,94 +6,94 @@ import ProductDetailClient from "./ProductDetailClient";
 import { Locale, locales } from "@/i18n/config";
 
 type Props = {
-  params: Promise<{ locale: string; slug: string }>;
+    params: Promise<{ locale: string; slug: string }>;
 };
 
 export async function generateStaticParams() {
-  const slugs = getAllProductSlugs();
-  
-  return locales.flatMap((locale) =>
-    slugs.map((slug) => ({
-      locale,
-      slug,
-    }))
-  );
+    const slugs = getAllProductSlugs();
+
+    return locales.flatMap((locale) =>
+        slugs.map((slug) => ({
+            locale,
+            slug,
+        }))
+    );
 }
 
 // Helper function to get localized content with fallback
 function getLocalized<T>(obj: Record<string, T> | undefined, locale: string): T | undefined {
-  if (!obj) return undefined;
-  return obj[locale] || obj["tr"] || obj["en"];
+    if (!obj) return undefined;
+    return obj[locale] || obj["tr"] || obj["en"];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, slug } = await params;
-  const product = getProductBySlug(slug);
+    const { locale, slug } = await params;
+    const product = getProductBySlug(slug);
 
-  if (!product) {
+    if (!product) {
+        return {
+            title: "Product Not Found",
+        };
+    }
+
+    const name = getLocalized(product.name, locale) || product.name.tr;
+    const description = getLocalized(product.description, locale) || product.description.tr;
+
     return {
-      title: "Product Not Found",
+        title: `${name} | YANGIN PERDE`,
+        description: description.slice(0, 160),
+        openGraph: {
+            title: `${name} | YANGIN PERDE`,
+            description: description.slice(0, 160),
+            type: "website",
+            images: product.images[0] ? [product.images[0]] : [],
+        },
     };
-  }
-
-  const name = getLocalized(product.name, locale) || product.name.tr;
-  const description = getLocalized(product.description, locale) || product.description.tr;
-
-  return {
-    title: `${name} | GESPERA`,
-    description: description.slice(0, 160),
-    openGraph: {
-      title: `${name} | GESPERA`,
-      description: description.slice(0, 160),
-      type: "website",
-      images: product.images[0] ? [product.images[0]] : [],
-    },
-  };
 }
 
 export default async function ProductDetailPage({ params }: Props) {
-  const { locale, slug } = await params;
-  setRequestLocale(locale);
+    const { locale, slug } = await params;
+    setRequestLocale(locale);
 
-  const product = getProductBySlug(slug);
+    const product = getProductBySlug(slug);
 
-  if (!product) {
-    notFound();
-  }
+    if (!product) {
+        notFound();
+    }
 
-  const relatedProducts = getProductsByCategory(product.category)
-    .filter((p) => p.id !== product.id)
-    .slice(0, 3);
+    const relatedProducts = getProductsByCategory(product.category)
+        .filter((p) => p.id !== product.id)
+        .slice(0, 3);
 
-  // JSON-LD Schemas
-  const productSchema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: getLocalized(product.name, locale) || product.name.tr,
-    description: getLocalized(product.description, locale) || product.description.tr,
-    image: product.images.map((img) => `https://gespera.com${img}`),
-    brand: {
-      "@type": "Brand",
-      name: "GESPERA",
-    },
-    manufacturer: {
-      "@type": "Organization",
-      name: "YMA Yapı Sistemleri San. ve Tic. Ltd. Şti.",
-    },
-    category: product.category,
-  };
+    // JSON-LD Schemas
+    const productSchema = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: getLocalized(product.name, locale) || product.name.tr,
+        description: getLocalized(product.description, locale) || product.description.tr,
+        image: product.images.map((img) => `https://yanginperde.com${img}`),
+        brand: {
+            "@type": "Brand",
+            name: "YANGIN PERDE",
+        },
+        manufacturer: {
+            "@type": "Organization",
+            name: "YMA Yapı Sistemleri San. ve Tic. Ltd. Şti.",
+        },
+        category: product.category,
+    };
 
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
-      />
-      <ProductDetailClient 
-        product={product} 
-        relatedProducts={relatedProducts} 
-        locale={locale as Locale} 
-      />
-    </>
-  );
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+            />
+            <ProductDetailClient
+                product={product}
+                relatedProducts={relatedProducts}
+                locale={locale as Locale}
+            />
+        </>
+    );
 }

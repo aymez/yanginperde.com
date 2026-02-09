@@ -4,7 +4,7 @@ import { COMPANY_INFO } from "./constants";
 export const DEFAULT_SEO_CONFIG = {
     siteName: "YANGIN PERDE",
     siteUrl: "https://yanginperde.com",
-    twitterHandle: "@gespera",
+    twitterHandle: "@yanginperde",
     defaultOgImage: "/images/og-default.jpg",
 };
 
@@ -15,7 +15,7 @@ export function generateOrganizationSchema() {
         name: COMPANY_INFO.name,
         legalName: COMPANY_INFO.legalName,
         url: COMPANY_INFO.website,
-        logo: `${DEFAULT_SEO_CONFIG.siteUrl}/images/logo-gespera.png`,
+        logo: `${DEFAULT_SEO_CONFIG.siteUrl}/images/logo.svg`,
         contactPoint: {
             "@type": "ContactPoint",
             telephone: COMPANY_INFO.phone,
@@ -43,7 +43,7 @@ export function generateLocalBusinessSchema() {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         name: COMPANY_INFO.name,
-        image: `${DEFAULT_SEO_CONFIG.siteUrl}/images/logo-gespera.png`,
+        image: `${DEFAULT_SEO_CONFIG.siteUrl}/images/logo.svg`,
         "@id": COMPANY_INFO.website,
         url: COMPANY_INFO.website,
         telephone: COMPANY_INFO.phone,

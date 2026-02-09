@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import MobileMenu from "./MobileMenu";
 import Logo from "./Logo";
 import LanguageSwitcher from "./LanguageSwitcher";
-import { getOutdoorCategories, getIndoorCategories, getProductSlugByCategory, searchProducts } from "@/data/products";
+import { getFireSystemCategories, getSmokeSystemCategories, getProductSlugByCategory, searchProducts } from "@/data/products";
 import { Locale } from "@/i18n/config";
 
 // Helper function to get localized content with fallback
@@ -33,8 +33,8 @@ export default function Header() {
     const navRef = useRef<HTMLDivElement>(null);
     const searchInputRef = useRef<HTMLInputElement>(null);
 
-    const outdoorCategories = getOutdoorCategories();
-    const indoorCategories = getIndoorCategories();
+    const fireSystemCategories = getFireSystemCategories();
+    const smokeSystemCategories = getSmokeSystemCategories();
 
     // Scroll handler
     useEffect(() => {
@@ -141,10 +141,10 @@ export default function Header() {
                                     {/* Outdoor */}
                                     <div>
                                         <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-50">
-                                            <span className="font-semibold text-slate-900 text-sm tracking-wide">{tCat("outdoor")}</span>
+                                            <span className="font-semibold text-slate-900 text-sm tracking-wide">{tCat("fireSystems")}</span>
                                         </div>
                                         <div className="flex flex-col gap-1">
-                                            {outdoorCategories.map((cat) => (
+                                            {fireSystemCategories.map((cat) => (
                                                 <Link
                                                     key={cat.slug}
                                                     href={`/urunler/${getProductSlugByCategory(cat.slug)}`}
@@ -160,10 +160,10 @@ export default function Header() {
                                     {/* Indoor */}
                                     <div>
                                         <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-50">
-                                            <span className="font-semibold text-slate-900 text-sm tracking-wide">{tCat("indoor")}</span>
+                                            <span className="font-semibold text-slate-900 text-sm tracking-wide">{tCat("smokeSystems")}</span>
                                         </div>
                                         <div className="flex flex-col gap-1">
-                                            {indoorCategories.map((cat) => (
+                                            {smokeSystemCategories.map((cat) => (
                                                 <Link
                                                     key={cat.slug}
                                                     href={`/urunler/${getProductSlugByCategory(cat.slug)}`}

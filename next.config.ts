@@ -32,11 +32,7 @@ const nextConfig: NextConfig = {
     async redirects() {
         return [
             // Image redirects (Old formats to WebP)
-            {
-                source: "/images/gespera/:path*(.jpg|.jpeg|.png)",
-                destination: "/images/gespera/:path*.webp",
-                permanent: true,
-            },
+
             // Product redirects (Turkish / Default)
             {
                 source: "/urunler/ahsap-jaluzi-perde",

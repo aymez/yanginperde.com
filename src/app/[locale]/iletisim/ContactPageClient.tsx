@@ -51,8 +51,8 @@ export default function ContactPageClient({ locale }: ContactPageClientProps) {
                 {/* Full Width Background Image */}
                 <div className="absolute inset-0 z-0">
                     <Image
-                        src="/images/gespera/stor-perdeler.webp"
-                        alt="Bize ulaşın - GESPERA stor perde çözümleri, gölgelendirme sistemleri"
+                        src="/images/placeholder-product.jpg"
+                        alt="Bize ulaşın - YANGIN PERDE stor perde çözümleri, gölgelendirme sistemleri"
                         fill
                         priority
                         quality={90}
@@ -233,7 +233,7 @@ export default function ContactPageClient({ locale }: ContactPageClientProps) {
                                     allowFullScreen
                                     loading="lazy"
                                     referrerPolicy="no-referrer-when-downgrade"
-                                    title="GESPERA Konum"
+                                    title="YANGIN PERDE Konum"
                                 />
                                 {/* Sol üstte GESPERA Showroom kartı */}
                                 <motion.div
@@ -252,7 +252,7 @@ export default function ContactPageClient({ locale }: ContactPageClientProps) {
                                                 </svg>
                                             </div>
                                             <div className="min-w-0">
-                                                <h4 className="text-lg font-semibold text-text-dark mb-2">GESPERA</h4>
+                                                <h4 className="text-lg font-semibold text-text-dark mb-2">YANGIN PERDE</h4>
                                                 <a
                                                     href={`https://www.google.com/maps/dir/?api=1&destination=${COMPANY_INFO.coordinates.lat},${COMPANY_INFO.coordinates.lng}`}
                                                     target="_blank"

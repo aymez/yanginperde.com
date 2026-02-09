@@ -72,7 +72,7 @@ export const PRODUCT_CATEGORIES: CategoryInfo[] = [
             en: "E and EW class fire curtains. Flame and heat control.",
         },
         icon: "fire",
-        image: "/images/products/yangin-perdesi-category.jpg",
+        image: "/images/products/fire-curtain-vertical.png",
     },
     {
         slug: "duman-perdesi",
@@ -82,7 +82,7 @@ export const PRODUCT_CATEGORIES: CategoryInfo[] = [
             en: "Automatic and fixed smoke curtains. Safe evacuation.",
         },
         icon: "smoke",
-        image: "/images/products/duman-perdesi-category.jpg",
+        image: "/images/products/smoke-curtain-auto.png",
     },
     {
         slug: "konveyor-sistem",
@@ -92,7 +92,7 @@ export const PRODUCT_CATEGORIES: CategoryInfo[] = [
             en: "Fire shutters for conveyor belt passages.",
         },
         icon: "conveyor",
-        image: "/images/products/konveyor-category.jpg",
+        image: "/images/products/fire-door.png",
     },
     {
         slug: "otomatik-perde",
@@ -102,7 +102,7 @@ export const PRODUCT_CATEGORIES: CategoryInfo[] = [
             en: "Curtain systems closing automatically during fire.",
         },
         icon: "automatic",
-        image: "/images/products/otomatik-perde-category.jpg",
+        image: "/images/products/fire-curtain-horizontal.png",
     },
 ];
 

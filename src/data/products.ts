@@ -482,11 +482,11 @@ export const products: Product[] = [
 ];
 
 // Helper functions for Footer
-export function getOutdoorCategories() {
+export function getFireSystemCategories() {
     return categories.filter(c => c.mainCategory === 'yangin-sistemleri');
 }
 
-export function getIndoorCategories() {
+export function getSmokeSystemCategories() {
     return categories.filter(c => c.mainCategory === 'duman-sistemleri');
 }
 

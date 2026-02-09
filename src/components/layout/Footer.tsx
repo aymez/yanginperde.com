@@ -4,7 +4,7 @@ import { Link } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { COMPANY_INFO } from "@/lib/constants";
 import { getFullAddress, formatPhoneLink } from "@/lib/utils";
-import { getOutdoorCategories } from "@/data/products";
+import { getFireSystemCategories } from "@/data/products";
 import Logo from "./Logo";
 import { Locale } from "@/i18n/config";
 
@@ -67,8 +67,8 @@ export default function Footer() {
                             {locale === "tr" ? "SİSTEMLER" : "SYSTEMS"}
                         </h4>
                         <ul className="space-y-4 text-sm font-mono text-gray-500">
-                            <li><Link href="/dis-mekan" className="hover:text-white transition-colors block border-b border-transparent hover:border-white/20 w-max pb-1">{locale === "tr" ? "Yangın Sistemleri" : "Fire Systems"}</Link></li>
-                            <li><Link href="/ic-mekan" className="hover:text-white transition-colors block border-b border-transparent hover:border-white/20 w-max pb-1">{locale === "tr" ? "Duman Sistemleri" : "Smoke Systems"}</Link></li>
+                            <li><Link href="/urunler" className="hover:text-white transition-colors block border-b border-transparent hover:border-white/20 w-max pb-1">{locale === "tr" ? "Yangın Sistemleri" : "Fire Systems"}</Link></li>
+                            <li><Link href="/urunler" className="hover:text-white transition-colors block border-b border-transparent hover:border-white/20 w-max pb-1">{locale === "tr" ? "Duman Sistemleri" : "Smoke Systems"}</Link></li>
                             <li><Link href="/ozel-cozumler" className="hover:text-white transition-colors block border-b border-transparent hover:border-white/20 w-max pb-1">{locale === "tr" ? "Özel Çözümler" : "Custom Solutions"}</Link></li>
                         </ul>
                     </div>

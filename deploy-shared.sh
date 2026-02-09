@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# GESPERA.com Shared Hosting Deployment Script
-# Kullanım: ./deploy-shared.sh gespera@aymez /home/gespera/web/gespera.com
+# YANGIN PERDE Shared Hosting Deployment Script
+# Kullanım: ./deploy-shared.sh user@aymez /home/user/web/yanginperde.com
 
 set -e
 
@@ -14,8 +14,8 @@ NC='\033[0m' # No Color
 
 # Parametreleri kontrol et
 if [ -z "$1" ] || [ -z "$2" ]; then
-    echo -e "${RED}Kullanım: ./deploy-shared.sh user@server.com /path/to/web/gespera.com${NC}"
-    echo "Örnek: ./deploy-shared.sh gespera@aymez /home/gespera/web/gespera.com"
+    echo -e "${RED}Kullanım: ./deploy-shared.sh user@server.com /path/to/web/yanginperde.com${NC}"
+    echo "Örnek: ./deploy-shared.sh yanginperde@aymez /home/yanginperde/web/yanginperde.com"
     exit 1
 fi
 
@@ -24,7 +24,7 @@ WEB_PATH=$2
 APP_PATH="$WEB_PATH/app"
 PUBLIC_HTML="$WEB_PATH/public_html"
 
-echo -e "${GREEN}🚀 GESPERA.com Shared Hosting Deployment Başlıyor...${NC}"
+echo -e "${GREEN}🚀 YANGIN PERDE Shared Hosting Deployment Başlıyor...${NC}"
 echo -e "${YELLOW}Server: ${SERVER}${NC}"
 echo -e "${YELLOW}Web Path: ${WEB_PATH}${NC}"
 echo -e "${YELLOW}App Path: ${APP_PATH}${NC}"
@@ -72,7 +72,7 @@ ssh $SERVER << EOF
     if [ ! -f .env.local ]; then
         echo -e "${YELLOW}⚠️  .env.local dosyası bulunamadı. Oluşturuluyor...${NC}"
         cat > .env.local << ENVFILE
-NEXT_PUBLIC_SITE_URL=https://gespera.com
+NEXT_PUBLIC_SITE_URL=https://yanginperde.com
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_site_key_here
 ENVFILE
         echo -e "${YELLOW}⚠️  Lütfen .env.local dosyasını düzenleyin: nano $APP_PATH/.env.local${NC}"
@@ -102,7 +102,7 @@ ENVFILE
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GESPERA - Yönlendiriliyor...</title>
+    <title>YANGIN PERDE - Yönlendiriliyor...</title>
     <script>
         const lang = navigator.language || navigator.userLanguage;
         const preferredLang = lang.startsWith('tr') ? 'tr' : 'en';
@@ -112,7 +112,7 @@ ENVFILE
 </head>
 <body>
     <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
-        <h1>GESPERA</h1>
+        <h1>YANGIN PERDE</h1>
         <p>Yönlendiriliyor...</p>
         <p><a href="/tr">Türkçe</a> | <a href="/en">English</a></p>
     </div>
@@ -158,7 +158,7 @@ INDEXHTML
 <html>
 <head>
 <meta charset="UTF-8">
-<title>GESPERA - Yönlendiriliyor</title>
+<title>YANGIN PERDE - Yönlendiriliyor</title>
 <script>
 const lang = (navigator.language || 'tr').startsWith('en') ? 'en' : 'tr';
 window.location.href = '/' + lang + '/\$page';
@@ -189,15 +189,15 @@ REDIRECTHTML
         # PM2 ile restart (eğer PM2 kuruluysa)
         if command -v pm2 &> /dev/null; then
             echo -e "${YELLOW}🔄 PM2 ile başlatılıyor...${NC}"
-            pm2 delete gespera 2>/dev/null || true
-            pm2 start npm --name "gespera" -- start
+            pm2 delete yanginperde 2>/dev/null || true
+            pm2 start npm --name "yanginperde" -- start
             pm2 save
             echo -e "${GREEN}✅ PM2 ile başlatıldı${NC}"
         else
             # PM2 yoksa nohup ile başlat
             echo -e "${YELLOW}⚠️  PM2 bulunamadı. nohup ile başlatılıyor...${NC}"
             cd $APP_PATH
-            nohup npm start > /tmp/gespera.log 2>&1 &
+            nohup npm start > /tmp/yanginperde.log 2>&1 &
             sleep 3
             
             # Başarılı mı kontrol et
@@ -207,7 +207,7 @@ REDIRECTHTML
                 echo -e "${YELLOW}⚠️  Node.js başlatılıyor, birkaç saniye bekleyin...${NC}"
             fi
             
-            echo -e "${BLUE}📋 Log dosyası: /tmp/gespera.log${NC}"
+            echo -e "${BLUE}📋 Log dosyası: /tmp/yanginperde.log${NC}"
         fi
     fi
     
@@ -283,7 +283,7 @@ HTACCESS
     echo -e "${BLUE}📋 Sonraki adımlar:${NC}"
     echo -e "${BLUE}   1. .env.local dosyasını düzenleyin: nano $APP_PATH/.env.local${NC}"
     echo -e "${BLUE}   2. Node.js uygulamasını başlatın: cd $APP_PATH && npm start${NC}"
-    echo -e "${BLUE}   3. Veya PM2 ile: pm2 start npm --name 'gespera' -- start${NC}"
+    echo -e "${BLUE}   3. Veya PM2 ile: pm2 start npm --name 'yanginperde' -- start${NC}"
     echo -e "${BLUE}   4. Hosting panelinden Node.js uygulamasını aktif edin (eğer varsa)${NC}"
 EOF
 

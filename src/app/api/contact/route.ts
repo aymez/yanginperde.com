@@ -7,7 +7,7 @@ const YANDEX_PASS = "pnpfvfvjfhjypqly"; // TODO: Güncellenmeli
 const TO_EMAIL = "info@yanginperde.com";
 
 // reCAPTCHA v2 gizli anahtar (sadece sunucuda kullanılır, client'a gönderilmez)
-// Production key - gespera.com için
+// Production key - yanginperde.com için
 const RECAPTCHA_SECRET_KEY = "6LfXFmQsAAAAAHhjdTwuid5WFmgwWrYzHfjm7Cmb";
 
 const subjectLabels: Record<string, string> = {

@@ -274,7 +274,7 @@ export default function ProductDetailClient({
             </section>
 
             {/* Related Products */}
-            {relatedProducts.length > 0 && product.category !== "jaluzi-perdeler" && (
+            {relatedProducts.length > 0 && (
                 <section className="py-20 bg-gradient-to-b from-white to-cream">
                     <div className="container">
                         <motion.div

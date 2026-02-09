@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# GESPERA.com Deployment Script
+# YANGIN PERDE Deployment Script
 # Kullanım: ./deploy.sh user@server.com /path/to/deploy
 
 set -e
@@ -20,9 +20,9 @@ fi
 
 SERVER=$1
 DEPLOY_PATH=$2
-REPO_URL="git@github.com:aymez/gespera.git"
+REPO_URL="git@github.com:aymez/yanginperde.com.git"
 
-echo -e "${GREEN}🚀 GESPERA.com Deployment Başlıyor...${NC}"
+echo -e "${GREEN}🚀 YANGIN PERDE Deployment Başlıyor...${NC}"
 echo -e "${YELLOW}Server: ${SERVER}${NC}"
 echo -e "${YELLOW}Deploy Path: ${DEPLOY_PATH}${NC}"
 echo ""
@@ -75,7 +75,7 @@ ssh $SERVER << EOF
     # PM2 ile restart (eğer PM2 kuruluysa)
     if command -v pm2 &> /dev/null; then
         echo -e "${YELLOW}🔄 PM2 ile restart ediliyor...${NC}"
-        pm2 restart gespera || pm2 start npm --name "gespera" -- start
+        pm2 restart yanginperde || pm2 start npm --name "yanginperde" -- start
         pm2 save
     else
         echo -e "${YELLOW}⚠️  PM2 bulunamadı. Manuel olarak 'npm start' çalıştırmanız gerekiyor.${NC}"

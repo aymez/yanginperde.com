@@ -3,10 +3,10 @@
 set timeout 600
 set server "gespera@gespera.com"
 set password "D3v!gespera"
-set deploy_path "/home/gespera/web/gespera.com"
+set deploy_path "/home/gespera/web/yanginperde.com"
 set app_path "$deploy_path/app"
 
-puts "\n🚀 GESPERA.com Deployment Başlıyor...\n"
+puts "\n🚀 YANGIN PERDE Deployment Başlıyor...\n"
 
 # SSH ile bağlan ve dizinleri oluştur
 puts "📁 Dizinler oluşturuluyor...\n"
@@ -100,7 +100,7 @@ send "chmod 700 . 2>/dev/null || true\r"
 expect "$ "
 
 # PM2 ile restart
-send "if command -v pm2 &> /dev/null; then pm2 restart gespera || pm2 start npm --name 'gespera' -- start; pm2 save; else echo '⚠️ PM2 bulunamadı. Manuel başlatın: cd $app_path && npm start'; fi\r"
+send "if command -v pm2 &> /dev/null; then pm2 restart yanginperde || pm2 start npm --name 'yanginperde' -- start; pm2 save; else echo '⚠️ PM2 bulunamadı. Manuel başlatın: cd $app_path && npm start'; fi\r"
 expect "$ "
 
 send "echo '✅ Deploy tamamlandı!'\r"
