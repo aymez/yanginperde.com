@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             description: t("meta.description"),
             type: "website",
             locale: locale === "tr" ? "tr_TR" : "en_US",
-            siteName: "GESPERA",
+            siteName: "YANGIN PERDE",
         },
     };
 }

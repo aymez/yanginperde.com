@@ -1,145 +1,149 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
-export default function HowItWorks() {
+export function HowItWorks() {
     const t = useTranslations("howItWorks");
-    const [activeStage, setActiveStage] = useState(0);
+    const [activeStep, setActiveStep] = useState(0);
 
-    const stages = [
-        {
-            id: 0,
-            title: t("stages.0.title"),
-            description: t("stages.0.description"),
-            status: t("stages.0.status")
-        },
-        {
-            id: 1,
-            title: t("stages.1.title"),
-            description: t("stages.1.description"),
-            status: t("stages.1.status")
-        },
-        {
-            id: 2,
-            title: t("stages.2.title"),
-            description: t("stages.2.description"),
-            status: t("stages.2.status")
-        },
-        {
-            id: 3,
-            title: t("stages.3.title"),
-            description: t("stages.3.description"),
-            status: t("stages.3.status")
-        }
-    ];
+    const steps = [0, 1, 2, 3];
+
+    const statusColors: Record<string, string> = {
+        BEKLEMEDE: "text-muted-foreground bg-surface-light",
+        ALARM: "text-caution bg-caution/10",
+        AKTİF: "text-primary bg-primary/10",
+        MÜHÜRLÜ: "text-green-400 bg-green-400/10",
+    };
 
     return (
-        <section className="py-24 bg-slate-50 border-t border-slate-200 relative overflow-hidden">
+        <section className="relative py-24 lg:py-32 bg-background overflow-hidden">
+            <div className="absolute inset-0 bg-grid-fire opacity-20" />
 
-            <div className="container mx-auto px-4 md:px-8 relative z-10">
-
-                <div className="text-center mb-16">
-                    <span className="text-primary font-bold tracking-widest uppercase mb-4 block text-sm">
-                        {t("systemLogic")}
-                    </span>
-                    <h2 className="text-4xl font-display font-bold text-slate-900 leading-tight">
-                        {t("gravityFailSafe")} <span className="text-slate-400">{t("mechanism")}</span>
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Section Header */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-16"
+                >
+                    <div className="inline-flex items-center gap-2 px-4 py-2 glass-fire rounded-full mb-6">
+                        <span className="text-xs font-medium text-primary uppercase tracking-wider">
+                            {t("systemLogic")}
+                        </span>
+                    </div>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold">
+                        <span className="text-foreground">{t("gravityFailSafe")} </span>
+                        <span className="text-fire-gradient">{t("mechanism")}</span>
                     </h2>
-                </div>
+                </motion.div>
 
-                <div className="grid lg:grid-cols-12 gap-12 items-center">
+                <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    {/* Left - Steps */}
+                    <div className="space-y-4">
+                        {steps.map((step) => {
+                            const status = t(`stages.${step}.status`);
+                            const colorClass = statusColors[status] || "text-muted-foreground bg-surface-light";
 
-                    {/* Left: Interactive Controls */}
-                    <div className="lg:col-span-4 space-y-4">
-                        {stages.map((stage, index) => (
-                            <div
-                                key={stage.id}
-                                onClick={() => setActiveStage(index)}
-                                className={`p-6 border rounded-xl cursor-pointer transition-all duration-300 ${activeStage === index ? "bg-white border-primary shadow-md" : "bg-transparent border-slate-200 hover:border-slate-300 hover:bg-white/50"}`}
-                            >
-                                <div className="flex justify-between items-center mb-2">
-                                    <span className={`font-bold text-xs uppercase tracking-widest ${activeStage === index ? "text-primary" : "text-slate-400"}`}>
-                                        {t("step")} 0{index + 1}
-                                    </span>
-                                    {activeStage === index && (
-                                        <motion.div layoutId="active-indicator" className="w-2 h-2 bg-primary rounded-full" />
-                                    )}
-                                </div>
-                                <h3 className={`text-lg font-display font-bold mb-1 ${activeStage === index ? "text-slate-900" : "text-slate-500"}`}>
-                                    {stage.title}
-                                </h3>
-                                <AnimatePresence>
-                                    {activeStage === index && (
-                                        <motion.p
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: "auto", opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            className="text-sm text-slate-600 font-normal leading-relaxed overflow-hidden"
-                                        >
-                                            {stage.description}
-                                        </motion.p>
-                                    )}
-                                </AnimatePresence>
-                            </div>
-                        ))}
+                            return (
+                                <motion.button
+                                    key={step}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: step * 0.1 }}
+                                    onClick={() => setActiveStep(step)}
+                                    className={`w-full text-left glass rounded-xl p-6 transition-all duration-300 ${activeStep === step
+                                            ? "border-primary/40 glow-fire-sm"
+                                            : "hover:border-border/60"
+                                        }`}
+                                >
+                                    <div className="flex items-start gap-4">
+                                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 font-mono text-sm font-bold ${activeStep === step
+                                                ? "bg-fire-gradient text-white"
+                                                : "bg-surface-light text-muted-foreground"
+                                            }`}>
+                                            {String(step + 1).padStart(2, "0")}
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="flex items-center justify-between mb-2">
+                                                <h3 className="font-display text-sm font-bold text-foreground uppercase tracking-wider">
+                                                    {t(`stages.${step}.title`)}
+                                                </h3>
+                                                <span className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase ${colorClass}`}>
+                                                    {status}
+                                                </span>
+                                            </div>
+                                            <p className="text-sm text-muted-foreground">
+                                                {t(`stages.${step}.description`)}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </motion.button>
+                            );
+                        })}
                     </div>
 
-                    {/* Right: Schematic Visualization */}
-                    <div className="lg:col-span-8 relative aspect-video bg-white border border-slate-200 rounded-3xl p-6 flex items-center justify-center overflow-hidden shadow-sm">
+                    {/* Right - Visual */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 40 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        className="hidden lg:block"
+                    >
+                        <div className="glass rounded-2xl p-8 aspect-square flex items-center justify-center relative overflow-hidden">
+                            {/* Building outline */}
+                            <div className="relative w-48 h-64 border-2 border-border/40 rounded-lg">
+                                {/* Floor separator */}
+                                <div className="absolute top-1/3 left-0 right-0 border-t border-border/30" />
+                                <div className="absolute top-2/3 left-0 right-0 border-t border-border/30" />
 
-                        {/* Status Overlay */}
-                        <div className="absolute top-6 right-6 flex gap-4">
-                            <div className="text-right">
-                                <div className="text-[10px] text-slate-400 font-bold uppercase mb-1">{t("statusLabel")}</div>
-                                <div className={`px-2 py-1 rounded-md text-xs font-bold border ${activeStage === 0 ? "bg-emerald-50 text-emerald-600 border-emerald-100" : activeStage === 1 ? "bg-amber-50 text-amber-600 border-amber-100" : "bg-red-50 text-primary border-red-100"}`}>
-                                    {stages[activeStage].status}
+                                {/* Headbox */}
+                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-6 px-4 py-1 rounded bg-surface-light border border-border/40">
+                                    <span className="font-mono text-[9px] text-muted-foreground uppercase tracking-widest">{t("headbox")}</span>
                                 </div>
-                            </div>
-                        </div>
 
-                        {/* Schematic Drawing - Rounded & Softer */}
-                        <div className="relative w-64 h-full border-x border-dashed border-slate-300">
+                                {/* Fire Curtain - animated */}
+                                <motion.div
+                                    className="absolute left-1/2 -translate-x-1/2 top-0 w-1 bg-fire-gradient rounded-full"
+                                    animate={{
+                                        height: activeStep === 0 ? "0%" : activeStep === 1 ? "30%" : activeStep === 2 ? "70%" : "100%",
+                                    }}
+                                    transition={{ duration: 1, ease: "easeInOut" }}
+                                />
 
-                            {/* Headbox */}
-                            <div className="absolute top-0 left-[-20px] right-[-20px] h-16 bg-slate-100 border border-slate-300 rounded-lg flex items-center justify-center z-20">
-                                <span className="text-[9px] text-slate-500 font-bold">{t("headbox")}</span>
-                            </div>
-
-                            {/* Curtain */}
-                            <motion.div
-                                animate={{
-                                    height: activeStage === 0 ? "0%" : activeStage === 1 ? "10%" : activeStage === 2 ? "60%" : "100%",
-                                    opacity: 1
-                                }}
-                                transition={{ duration: 1.5, ease: "easeInOut" }}
-                                className="absolute top-16 left-0 right-0 bg-primary/10 border-b-4 border-primary z-10"
-                            >
-                                <div className="w-full h-full opacity-20 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#000_10px,#000_11px)]"></div>
-                            </motion.div>
-
-                            {/* Side Guides */}
-                            <div className="absolute inset-y-0 left-0 w-1.5 bg-slate-200 rounded-full"></div>
-                            <div className="absolute inset-y-0 right-0 w-1.5 bg-slate-200 rounded-full"></div>
-
-                            {/* Fire/Smoke Representation */}
-                            <AnimatePresence>
-                                {activeStage >= 1 && (
+                                {/* Fire glow */}
+                                {activeStep >= 1 && (
                                     <motion.div
+                                        className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/20 to-transparent"
                                         initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        className="absolute bottom-0 left-[-50px] right-[-50px] h-32 bg-gradient-to-t from-orange-500/20 to-transparent blur-xl pointer-events-none"
+                                        animate={{ opacity: activeStep >= 1 ? 1 : 0, height: "40%" }}
+                                        transition={{ duration: 0.5 }}
                                     />
                                 )}
-                            </AnimatePresence>
 
+                                {/* Sealed indicator */}
+                                {activeStep === 3 && (
+                                    <motion.div
+                                        className="absolute inset-0 border-2 border-green-400/40 rounded-lg"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                    />
+                                )}
+                            </div>
+
+                            {/* Step label */}
+                            <div className="absolute bottom-4 left-0 right-0 text-center">
+                                <span className="font-mono text-xs text-muted-foreground">
+                                    {t("step")} {activeStep + 1}/4 — {t(`stages.${activeStep}.title`)}
+                                </span>
+                            </div>
                         </div>
-
-                    </div>
+                    </motion.div>
                 </div>
-
             </div>
         </section>
     );

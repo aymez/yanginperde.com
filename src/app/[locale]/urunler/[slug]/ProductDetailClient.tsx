@@ -1,310 +1,142 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { Product, LocalizedString, LocalizedStringArray } from "@/types";
-import { Gallery, ProductCard } from "@/components/shared";
-import { FADE_IN_UP, STAGGER_CONTAINER } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { Product } from "@/types";
 import { Locale } from "@/i18n/config";
 
-interface ProductDetailClientProps {
+interface Props {
     product: Product;
     relatedProducts: Product[];
     locale: Locale;
 }
 
-// Helper function to get localized content with fallback
-function getLocalizedArray(obj: LocalizedStringArray | undefined, locale: Locale): string[] {
-    if (!obj) return [];
-    return obj[locale] || obj["tr"] || obj["en"] || [];
-}
-
-function getLocalizedString(obj: LocalizedString | undefined, locale: Locale): string {
-    if (!obj) return "";
-    return obj[locale] || obj["tr"] || obj["en"] || "";
-}
-
-export default function ProductDetailClient({
-    product,
-    relatedProducts,
-    locale,
-}: ProductDetailClientProps) {
+export default function ProductDetailClient({ product, relatedProducts, locale }: Props) {
     const t = useTranslations("productDetail");
 
-    // Get localized content with fallbacks
-    const features = getLocalizedArray(product.features, locale);
-    const usageAreas = getLocalizedArray(product.usageAreas, locale);
-    const advantages = getLocalizedArray(product.advantages, locale);
-    const name = getLocalizedString(product.name, locale);
-    const shortDescription = getLocalizedString(product.shortDescription, locale);
-    const description = getLocalizedString(product.description, locale);
+    const name = (product.name as Record<string, string>)[locale] || product.name.tr;
+    const description = (product.description as Record<string, string>)[locale] || product.description.tr;
+    const features = ((product.features as Record<string, string[]>)[locale] || product.features.tr) as string[];
+    const usageAreas = ((product.usageAreas as Record<string, string[]>)[locale] || product.usageAreas.tr) as string[];
+    const advantages = ((product.advantages as Record<string, string[]>)[locale] || product.advantages.tr) as string[];
 
     return (
-        <main className="bg-cream">
-            {/* Hero Section - Modern & Minimalist */}
-            <section className="pt-28 pb-20">
-                <div className="container">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-                        {/* Gallery - mobilde sticky yok, sadece lg'de sabit kalsın; böylece açıklama metni görsellerin altında kaymaz */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            className="lg:sticky lg:top-32"
-                        >
-                            <Gallery images={product.images} alt={name || "Product"} />
+        <div className="min-h-screen bg-background">
+            {/* Hero */}
+            <section className="relative py-28 lg:py-36 overflow-hidden">
+                <div className="absolute inset-0 bg-grid-fire opacity-30" />
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                        <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
+                            <Link href="/urunler" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary mb-6 transition-colors">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                </svg>
+                                {t("backToProducts")}
+                            </Link>
+                            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-foreground mb-6">{name}</h1>
+                            <p className="text-muted-foreground leading-relaxed mb-8">{description}</p>
+                            <Link href="/teklif-al" className="inline-flex items-center gap-2 px-8 py-4 bg-fire-gradient text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-primary/30 transition-all duration-300">
+                                {t("getQuote")}
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                            </Link>
                         </motion.div>
-
-                        {/* Details */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
-                            className="space-y-8"
-                        >
-                            {/* Title */}
-                            <div className="space-y-4">
-                                <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium text-anthracite-dark leading-tight">
-                                    {name}
-                                </h1>
-
-                                {/* Short Description */}
-                                <p className="text-xl text-anthracite leading-relaxed">
-                                    {shortDescription}
-                                </p>
-                            </div>
-
-                            {/* Description */}
-                            <div className="pt-4 border-t border-border-muted">
-                                <p className="text-anthracite leading-relaxed text-lg">
-                                    {description}
-                                </p>
+                        <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }}>
+                            <div className="glass rounded-2xl overflow-hidden">
+                                <img src={product.images[0] || "/images/placeholder-product.jpg"} alt={name} className="w-full aspect-[4/3] object-cover" />
                             </div>
                         </motion.div>
                     </div>
                 </div>
             </section>
 
-            {/* Features Section - Modern Grid */}
-            <section className="py-20 bg-white">
-                <div className="container">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="max-w-4xl mx-auto"
-                    >
-                        <h2 className="text-3xl md:text-4xl font-display font-medium text-text-dark mb-12 text-center">
-                            {locale === "tr" ? "Özellikler" : "Features"}
-                        </h2>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {features.map((feature, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.05 }}
-                                    className="flex items-start gap-4 p-6 bg-cream/30 rounded-xl hover:bg-cream/50 transition-colors"
-                                >
-                                    <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="14"
-                                            height="14"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="text-primary"
-                                        >
-                                            <polyline points="20 6 9 17 4 12" />
-                                        </svg>
+            {/* Specifications */}
+            <section className="py-16 bg-surface">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {/* Technical Specs */}
+                        <div className="glass rounded-xl p-6">
+                            <h2 className="font-display text-sm font-bold text-primary uppercase tracking-wider mb-6">{t("specifications")}</h2>
+                            <div className="space-y-4">
+                                {product.specifications.map((spec, i) => (
+                                    <div key={i} className="flex justify-between items-center border-b border-border/30 pb-3 last:border-0">
+                                        <span className="text-sm text-muted-foreground">{spec.label}</span>
+                                        <span className="font-mono text-sm text-foreground">{spec.value}</span>
                                     </div>
-                                    <p className="text-text-dark leading-relaxed">{feature}</p>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Technical Details Section - Modern Table */}
-            <section className="py-20 bg-gradient-to-b from-cream to-white">
-                <div className="container">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="max-w-3xl mx-auto"
-                    >
-                        <h2 className="text-3xl md:text-4xl font-display font-medium text-text-dark mb-12 text-center">
-                            {t("specifications")}
-                        </h2>
-
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-border-muted/50">
-                            <div className="divide-y divide-border-muted/30">
-                                {product.specifications.map((spec, index) => (
-                                    <motion.div
-                                        key={index}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: index * 0.05 }}
-                                        className="flex items-center justify-between py-5 px-8 hover:bg-cream/30 transition-colors"
-                                    >
-                                        <span className="font-medium text-text-dark">
-                                            {spec.label}
-                                        </span>
-                                        <span className="text-text-muted font-medium">
-                                            {spec.value}
-                                        </span>
-                                    </motion.div>
                                 ))}
                             </div>
                         </div>
-                    </motion.div>
-                </div>
-            </section>
 
-            {/* Usage Areas & Advantages - Ultra Modern Layout */}
-            <section className="py-20 bg-gradient-to-b from-white via-cream/20 to-white">
-                <div className="container">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 max-w-6xl mx-auto">
-                        {/* Usage Areas */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <div className="mb-8 pb-4 border-b border-primary/20">
-                                <h2 className="text-3xl md:text-4xl font-display font-medium text-text-dark">
-                                    {t("usageAreas")}
-                                </h2>
-                            </div>
-                            <div className="space-y-3">
-                                {usageAreas.map((area, index) => (
-                                    <motion.div
-                                        key={index}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: index * 0.05 }}
-                                        whileHover={{ x: 4 }}
-                                        className="group flex items-center gap-4 p-5 bg-white rounded-2xl border border-border-muted/50 hover:border-primary/30 hover:shadow-md transition-all duration-300"
-                                    >
-                                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center flex-shrink-0 group-hover:from-primary/20 group-hover:to-primary/10 transition-all duration-300">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="18"
-                                                height="18"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                className="text-primary"
-                                            >
-                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                                                <circle cx="12" cy="10" r="3" />
-                                            </svg>
-                                        </div>
-                                        <span className="text-text-dark font-medium group-hover:text-primary transition-colors">{area}</span>
-                                    </motion.div>
+                        {/* Features */}
+                        <div className="glass rounded-xl p-6">
+                            <h2 className="font-display text-sm font-bold text-primary uppercase tracking-wider mb-6">{t("features")}</h2>
+                            <ul className="space-y-3">
+                                {features.map((feature, i) => (
+                                    <li key={i} className="flex gap-3 text-sm text-muted-foreground">
+                                        <svg className="w-4 h-4 text-primary shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        {feature}
+                                    </li>
                                 ))}
-                            </div>
-                        </motion.div>
+                            </ul>
+                        </div>
 
                         {/* Advantages */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
-                        >
-                            <div className="mb-8 pb-4 border-b border-primary/20">
-                                <h2 className="text-3xl md:text-4xl font-display font-medium text-text-dark">
-                                    {t("advantages")}
-                                </h2>
-                            </div>
-                            <div className="space-y-3">
-                                {advantages.map((advantage, index) => (
-                                    <motion.div
-                                        key={index}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: index * 0.05 }}
-                                        whileHover={{ x: 4 }}
-                                        className="group flex items-start gap-4 p-5 bg-white rounded-2xl border border-border-muted/50 hover:border-primary/30 hover:shadow-md transition-all duration-300"
-                                    >
-                                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:from-primary/20 group-hover:to-primary/10 transition-all duration-300">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="18"
-                                                height="18"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="2.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                className="text-primary"
-                                            >
-                                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                                                <polyline points="22 4 12 14.01 9 11.01" />
-                                            </svg>
-                                        </div>
-                                        <span className="text-text-dark leading-relaxed font-medium group-hover:text-primary transition-colors pt-1">{advantage}</span>
-                                    </motion.div>
+                        <div className="glass rounded-xl p-6">
+                            <h2 className="font-display text-sm font-bold text-primary uppercase tracking-wider mb-6">{t("advantages")}</h2>
+                            <ul className="space-y-3">
+                                {advantages.map((adv, i) => (
+                                    <li key={i} className="flex gap-3 text-sm text-muted-foreground">
+                                        <svg className="w-4 h-4 text-primary shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                        {adv}
+                                    </li>
                                 ))}
-                            </div>
-                        </motion.div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Usage Areas */}
+            <section className="py-16 bg-background">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 className="text-2xl font-display font-bold text-foreground mb-8 text-center">{t("usageAreas")}</h2>
+                    <div className="flex flex-wrap justify-center gap-3">
+                        {usageAreas.map((area, i) => (
+                            <span key={i} className="px-4 py-2 glass rounded-lg text-sm text-muted-foreground">{area}</span>
+                        ))}
                     </div>
                 </div>
             </section>
 
             {/* Related Products */}
             {relatedProducts.length > 0 && (
-                <section className="py-20 bg-gradient-to-b from-white to-cream">
-                    <div className="container">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                            className="text-center mb-12"
-                        >
-                            <h2 className="text-3xl md:text-4xl font-display font-medium text-text-dark mb-4">
-                                {t("relatedProducts")}
-                            </h2>
-                            <p className="text-text-muted">
-                                {locale === "tr" ? "Benzer ürünlerimizi keşfedin" : "Discover similar products"}
-                            </p>
-                        </motion.div>
-                        <motion.div
-                            variants={STAGGER_CONTAINER}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-                        >
-                            {relatedProducts.map((relProduct, index) => (
-                                <ProductCard key={relProduct.id} product={relProduct} index={index} />
+                <section className="py-16 bg-surface">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <h2 className="text-2xl font-display font-bold text-foreground mb-8 text-center">{t("relatedProducts")}</h2>
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {relatedProducts.map((rp) => (
+                                <Link key={rp.id} href={`/urunler/${rp.slug}`}>
+                                    <div className="group glass rounded-xl overflow-hidden hover-glow transition-all duration-300 cursor-pointer">
+                                        <div className="relative aspect-[4/3] overflow-hidden bg-surface-light">
+                                            <img src={rp.images[0] || "/images/placeholder-product.jpg"} alt={(rp.name as Record<string, string>)[locale] || rp.name.tr} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                        </div>
+                                        <div className="p-5">
+                                            <h3 className="font-display font-bold text-foreground group-hover:text-primary transition-colors">{(rp.name as Record<string, string>)[locale] || rp.name.tr}</h3>
+                                        </div>
+                                    </div>
+                                </Link>
                             ))}
-                        </motion.div>
+                        </div>
                     </div>
                 </section>
             )}
-        </main>
+        </div>
     );
 }

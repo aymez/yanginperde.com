@@ -1,174 +1,114 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { useSearchParams } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import { products } from "@/data/products";
-import { PRODUCT_CATEGORIES, STAGGER_CONTAINER } from "@/lib/constants";
-import { ProductCard } from "@/components/shared";
-import { Locale } from "@/i18n/config";
-
-// Helper function to get localized content with fallback
-function getLocalized<T>(obj: Record<string, T> | undefined, locale: Locale): T | undefined {
-    if (!obj) return undefined;
-    return obj[locale] || obj["tr"] || obj["en"];
-}
+import { motion } from "framer-motion";
+import { useTranslations, useLocale } from "next-intl";
+import { Link } from "@/i18n/routing";
+import { categories, mainCategories, products } from "@/data/products";
+import { useState } from "react";
 
 export default function ProductsPageClient() {
-    const locale = useLocale() as Locale;
     const t = useTranslations("products");
-    const searchParams = useSearchParams();
-    const initialCategory = searchParams.get("kategori") || "all";
-    const [activeCategory, setActiveCategory] = useState(initialCategory);
+    const locale = useLocale();
+    const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
-    const filteredProducts = useMemo(() => {
-        if (activeCategory === "all") return products;
-        return products.filter((p) => p.category === activeCategory);
-    }, [activeCategory]);
-
-    const filterOptions = [
-        { slug: "all", name: { tr: "Tümü", en: "All" } },
-        ...PRODUCT_CATEGORIES,
-    ];
-
-    const activeFilter = filterOptions.find(f => f.slug === activeCategory);
+    const filteredProducts = activeCategory
+        ? products.filter((p) => p.category === activeCategory)
+        : products;
 
     return (
-        <div className="min-h-screen">
-            {/* Hero Section - Ana sayfa tarzında */}
-            <section className="relative min-h-[60vh] lg:min-h-[65vh] overflow-hidden">
-                {/* Full Width Background Image */}
-                <div className="absolute inset-0">
-                    <Image
-                        src="/images/placeholder-product.jpg"
-                        alt="Yangın Perde Ürün Koleksiyonu"
-                        fill
-                        priority
-                        quality={90}
-                        className="object-cover"
-                        sizes="100vw"
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-cream/95 via-cream/70 to-transparent" />
-                </div>
-
-                {/* Content */}
-                <div className="relative z-10 h-full">
-                    <div className="container h-full">
-                        <div className="flex items-center min-h-[60vh] lg:min-h-[65vh] py-20 lg:py-24">
-                            <motion.div
-                                initial={{ opacity: 0, x: -30 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.8, ease: "easeOut" }}
-                                className="max-w-xl space-y-5 lg:space-y-6"
-                            >
-                                {/* Badge */}
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.1 }}
-                                    className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full"
-                                >
-                                    <span className="w-2 h-2 bg-primary rounded-full" />
-                                    <span className="text-sm font-medium text-primary">
-                                        {locale === "tr" ? "Üretim Portföyümüz" : "Our Production Portfolio"}
-                                    </span>
-                                </motion.div>
-
-                                {/* Main Heading */}
-                                <motion.h1
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.2 }}
-                                    className="text-[2.5rem] md:text-5xl lg:text-[3.5rem] xl:text-6xl font-display font-medium leading-[1.1]"
-                                    style={{ color: '#8B7355' }}
-                                >
-                                    {locale === "tr" ? "Gölgelendirme Sistemleri" : "Shading Systems"}
-                                </motion.h1>
-
-                                {/* Subtitle */}
-                                <motion.p
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.4 }}
-                                    className="text-anthracite text-base lg:text-lg leading-relaxed max-w-md"
-                                >
-                                    {locale === "tr"
-                                        ? "Avrupa standartlarında üretim kalitesiyle, modern mimari projeler için gölgelendirme sistemleri üretiyoruz."
-                                        : "We manufacture shading systems for modern architectural projects with European standard production quality."}
-                                </motion.p>
-                            </motion.div>
+        <div className="min-h-screen bg-background">
+            {/* Hero */}
+            <section className="relative py-28 lg:py-36 overflow-hidden">
+                <div className="absolute inset-0 bg-grid-fire opacity-30" />
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 glass-fire rounded-full mb-6">
+                            <span className="text-xs font-medium text-primary uppercase tracking-wider">{t("catalog")}</span>
                         </div>
-                    </div>
+                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-foreground mb-6">{t("title")}</h1>
+                        <p className="text-muted-foreground max-w-2xl mx-auto text-lg">{t("subtitle")}</p>
+                    </motion.div>
                 </div>
+            </section>
 
-                {/* Modern Wave */}
-                <div className="absolute bottom-0 left-0 right-0 z-20">
-                    <svg viewBox="0 0 1440 120" preserveAspectRatio="none" className="w-full h-20 md:h-28 lg:h-36">
-                        <path d="M0,70 Q360,30 720,50 T1440,40 L1440,120 L0,120 Z" fill="#E8E3DB" opacity="0.6" />
-                        <path d="M0,60 Q280,90 560,50 Q840,10 1120,50 Q1280,70 1440,45 L1440,120 L0,120 Z" fill="#EDE8E0" opacity="0.8" />
-                        <path d="M0,80 Q200,60 400,70 Q600,80 800,55 Q1000,30 1200,60 Q1320,75 1440,50 L1440,120 L0,120 Z" fill="#F5F1EB" />
-                    </svg>
+            {/* Category Filter */}
+            <section className="py-8 bg-surface border-b border-border/50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-wrap justify-center gap-3">
+                        <button
+                            onClick={() => setActiveCategory(null)}
+                            className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${!activeCategory
+                                    ? "bg-fire-gradient text-white shadow-lg shadow-primary/30"
+                                    : "glass text-muted-foreground hover:text-foreground"
+                                }`}
+                        >
+                            {t("all")}
+                        </button>
+                        {categories.map((cat) => (
+                            <button
+                                key={cat.slug}
+                                onClick={() => setActiveCategory(cat.slug)}
+                                className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${activeCategory === cat.slug
+                                        ? "bg-fire-gradient text-white shadow-lg shadow-primary/30"
+                                        : "glass text-muted-foreground hover:text-foreground"
+                                    }`}
+                            >
+                                {(cat.name as Record<string, string>)[locale] || cat.name.tr}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </section>
 
             {/* Products Grid */}
-            <section className="py-12 md:py-20 bg-cream-light">
-                <div className="container">
-                    {/* Active Category Title */}
-                    <motion.div
-                        key={activeCategory}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="mb-10 md:mb-14"
-                    >
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-[2px] bg-primary" />
-                            <h2 className="text-2xl md:text-3xl font-display font-medium text-text-dark">
-                                {activeFilter ? getLocalized(activeFilter.name, locale) : ""}
-                            </h2>
-                        </div>
-                    </motion.div>
+            <section className="py-16 bg-background">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredProducts.map((product, i) => (
+                            <motion.div
+                                key={product.id}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.05 }}
+                            >
+                                <Link href={`/urunler/${product.slug}`}>
+                                    <div className="group glass rounded-xl overflow-hidden hover-glow transition-all duration-300 cursor-pointer h-full">
+                                        {/* Product Image */}
+                                        <div className="relative aspect-[4/3] overflow-hidden bg-surface-light">
+                                            <img
+                                                src={product.images[0] || "/images/placeholder-product.jpg"}
+                                                alt={(product.name as Record<string, string>)[locale] || product.name.tr}
+                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-carbon/80 via-transparent to-transparent" />
+                                            {product.featured && (
+                                                <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-fire-gradient text-white text-[10px] font-mono font-bold uppercase">
+                                                    {t("featured")}
+                                                </div>
+                                            )}
+                                        </div>
 
-                    {/* Grid */}
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={activeCategory}
-                            variants={STAGGER_CONTAINER}
-                            initial="hidden"
-                            animate="visible"
-                            exit={{ opacity: 0 }}
-                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-                        >
-                            {filteredProducts.map((product, index) => (
-                                <ProductCard key={product.id} product={product} index={index} />
-                            ))}
-                        </motion.div>
-                    </AnimatePresence>
-
-                    {/* Empty State */}
-                    {filteredProducts.length === 0 && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="text-center py-20"
-                        >
-                            <div className="w-20 h-20 mx-auto mb-6 bg-cream-dark rounded-full flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-text-muted">
-                                    <circle cx="11" cy="11" r="8" />
-                                    <path d="m21 21-4.3-4.3" />
-                                </svg>
-                            </div>
-                            <p className="text-text-muted text-lg">
-                                {locale === "tr"
-                                    ? "Bu kategoride henüz ürün bulunmamaktadır."
-                                    : "No products found in this category."}
-                            </p>
-                        </motion.div>
-                    )}
+                                        {/* Content */}
+                                        <div className="p-6">
+                                            <h3 className="font-display text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-2">
+                                                {(product.name as Record<string, string>)[locale] || product.name.tr}
+                                            </h3>
+                                            <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-4">
+                                                {(product.shortDescription as Record<string, string>)[locale] || product.shortDescription.tr}
+                                            </p>
+                                            <div className="flex items-center gap-2 text-primary text-sm font-medium group-hover:gap-3 transition-all">
+                                                <span>{t("viewDetails")}</span>
+                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </motion.div>
+                        ))}
+                    </div>
                 </div>
             </section>
         </div>

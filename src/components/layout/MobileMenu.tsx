@@ -1,353 +1,153 @@
 "use client";
 
-import { useState } from "react";
-import { Link } from "@/i18n/routing";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations, useLocale } from "next-intl";
-import { motion, AnimatePresence } from "framer-motion";
-import { usePathname } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
-import LanguageSwitcher from "./LanguageSwitcher";
-import Logo from "./Logo";
-import { getFireSystemCategories, getSmokeSystemCategories, getProductSlugByCategory } from "@/data/products";
-import { Locale } from "@/i18n/config";
-
-function getLocalized<T>(obj: Record<string, T> | undefined, locale: Locale): T | undefined {
-    if (!obj) return undefined;
-    return obj[locale] || obj["tr"] || obj["en"];
-}
+import { Link } from "@/i18n/routing";
+import { categories } from "@/data/products";
+import { useState } from "react";
 
 interface MobileMenuProps {
+    isOpen: boolean;
     onClose: () => void;
-    onSearch?: () => void;
 }
 
-export default function MobileMenu({ onClose, onSearch }: MobileMenuProps) {
+export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     const t = useTranslations("nav");
-    const tCat = useTranslations("categories");
-    const pathname = usePathname();
-    const locale = useLocale() as Locale;
-    const [isProductsOpen, setIsProductsOpen] = useState(false);
+    const locale = useLocale();
+    const [productsOpen, setProductsOpen] = useState(false);
 
-    const fireSystemCategories = getFireSystemCategories();
-    const smokeSystemCategories = getSmokeSystemCategories();
-
-    const isActive = (href: string) => {
-        if (href === "/") return pathname === "/";
-        return pathname.startsWith(href);
-    };
-
-    const isProductsActive =
-        pathname.includes("/urunler");
+    const fireCategories = categories.filter((c) => c.mainCategory === "yangin-sistemleri");
+    const smokeCategories = categories.filter((c) => c.mainCategory === "duman-sistemleri");
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 lg:hidden"
-        >
-            {/* Backdrop */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-anthracite/40 backdrop-blur-sm"
-                onClick={onClose}
-            />
+        <AnimatePresence>
+            {isOpen && (
+                <>
+                    {/* Backdrop */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+                        onClick={onClose}
+                    />
 
-            {/* Menu Panel */}
-            <motion.div
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                className="absolute top-0 right-0 bottom-0 w-full max-w-sm bg-white shadow-xl"
-            >
-                <div className="flex flex-col h-full">
-                    {/* Header */}
-                    <div className="flex items-center justify-between p-5 border-b border-border-muted/50">
-                        <Logo className="h-9" width={140} height={40} />
-                        <button
-                            onClick={onClose}
-                            className="p-2 -mr-2 text-text-dark hover:text-primary transition-colors rounded-full"
-                            aria-label="Close menu"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <line x1="18" y1="6" x2="6" y2="18" />
-                                <line x1="6" y1="6" x2="18" y2="18" />
-                            </svg>
-                        </button>
-                    </div>
+                    {/* Menu Panel */}
+                    <motion.div
+                        initial={{ x: "100%" }}
+                        animate={{ x: 0 }}
+                        exit={{ x: "100%" }}
+                        transition={{ type: "spring", damping: 28, stiffness: 300 }}
+                        className="fixed top-0 right-0 bottom-0 w-[320px] bg-carbon z-50 lg:hidden overflow-y-auto"
+                    >
+                        {/* Fire accent line */}
+                        <div className="absolute top-0 left-0 bottom-0 w-[3px] bg-fire-gradient" />
 
-                    {/* Navigation - masaüstü menü ile aynı sıra ve yapı */}
-                    <nav className="flex-1 overflow-y-auto p-5 space-y-1">
-                        {/* Ana Sayfa */}
-                        <Link
-                            href="/"
-                            onClick={onClose}
-                            className={cn(
-                                "flex items-center px-4 py-2.5 text-base font-medium rounded-full transition-all duration-200",
-                                pathname === "/"
-                                    ? "text-primary"
-                                    : "text-text-dark/80 hover:text-primary"
-                            )}
-                        >
-                            {t("home")}
-                        </Link>
+                        {/* Header */}
+                        <div className="flex items-center justify-between p-6 border-b border-border/50">
+                            <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 rounded-lg bg-fire-gradient flex items-center justify-center">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-white">
+                                        <path d="M13.5 0.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z" fill="currentColor" />
+                                    </svg>
+                                </div>
+                                <span className="font-display text-sm font-bold tracking-wider">
+                                    YANGIN<span className="text-primary"> PERDE</span>
+                                </span>
+                            </div>
+                            <button onClick={onClose} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-light transition-colors">
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
 
-                        {/* Ürünler - açılır bölüm */}
-                        <div>
-                            <button
-                                onClick={() => setIsProductsOpen(!isProductsOpen)}
-                                className={cn(
-                                    "flex items-center justify-between w-full px-4 py-2.5 text-base font-medium rounded-full transition-all duration-200",
-                                    isProductsActive
-                                        ? "text-primary"
-                                        : "text-text-dark/80 hover:text-primary"
-                                )}
-                            >
-                                <span>{t("products")}</span>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="14"
-                                    height="14"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className={cn(
-                                        "transition-transform duration-200",
-                                        isProductsOpen && "rotate-180"
+                        {/* Navigation */}
+                        <nav className="p-6 space-y-1">
+                            <Link href="/" onClick={onClose} className="block px-4 py-3 text-sm font-medium text-foreground hover:text-primary hover:bg-surface-light rounded-lg transition-all">
+                                {t("home")}
+                            </Link>
+
+                            {/* Products Accordion */}
+                            <div>
+                                <button
+                                    onClick={() => setProductsOpen(!productsOpen)}
+                                    className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-foreground hover:text-primary hover:bg-surface-light rounded-lg transition-all"
+                                >
+                                    <span>{t("products")}</span>
+                                    <svg className={`w-4 h-4 transition-transform ${productsOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+
+                                <AnimatePresence>
+                                    {productsOpen && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: "auto", opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="overflow-hidden"
+                                        >
+                                            <div className="pl-4 space-y-0.5 pb-2">
+                                                <div className="px-4 py-2 text-xs font-display font-bold text-primary uppercase tracking-wider">
+                                                    {t("fireSystems")}
+                                                </div>
+                                                {fireCategories.map((cat) => (
+                                                    <Link key={cat.slug} href={`/urunler/${cat.slug}`} onClick={onClose} className="block px-4 py-2 text-sm text-muted-foreground hover:text-primary rounded-lg transition-colors">
+                                                        {(cat.name as Record<string, string>)[locale] || cat.name.tr}
+                                                    </Link>
+                                                ))}
+                                                <div className="px-4 py-2 text-xs font-display font-bold text-smoke uppercase tracking-wider mt-2">
+                                                    {t("smokeSystems")}
+                                                </div>
+                                                {smokeCategories.map((cat) => (
+                                                    <Link key={cat.slug} href={`/urunler/${cat.slug}`} onClick={onClose} className="block px-4 py-2 text-sm text-muted-foreground hover:text-primary rounded-lg transition-colors">
+                                                        {(cat.name as Record<string, string>)[locale] || cat.name.tr}
+                                                    </Link>
+                                                ))}
+                                                <Link href="/urunler" onClick={onClose} className="block px-4 py-2 text-sm text-primary font-medium rounded-lg transition-colors">
+                                                    {t("allProducts")} →
+                                                </Link>
+                                            </div>
+                                        </motion.div>
                                     )}
-                                >
-                                    <path d="m6 9 6 6 6-6" />
-                                </svg>
-                            </button>
+                                </AnimatePresence>
+                            </div>
 
-                            <AnimatePresence>
-                                {isProductsOpen && (
-                                    <motion.div
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: "auto" }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        transition={{ duration: 0.2 }}
-                                        className="overflow-hidden pl-4 mt-1 space-y-1 border-l-2 border-cream ml-2"
-                                    >
-                                        {/* Dış Mekan */}
-                                        <div className="pt-2">
-                                            <Link
-                                                href="/urunler"
-                                                onClick={onClose}
-                                                className="flex items-center gap-2 text-base font-semibold text-primary mb-2 hover:underline"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                    <circle cx="12" cy="12" r="4" />
-                                                    <path d="M12 2v2" />
-                                                    <path d="M12 20v2" />
-                                                    <path d="m4.93 4.93 1.41 1.41" />
-                                                    <path d="m17.66 17.66 1.41 1.41" />
-                                                    <path d="M2 12h2" />
-                                                    <path d="M20 12h2" />
-                                                    <path d="m6.34 17.66-1.41 1.41" />
-                                                    <path d="m19.07 4.93-1.41 1.41" />
-                                                </svg>
-                                                {tCat("fireSystems")}
-                                            </Link>
-                                            <div className="space-y-0.5">
-                                                {fireSystemCategories.map((cat) => {
-                                                    const productSlug = getProductSlugByCategory(cat.slug);
-                                                    return (
-                                                        <Link
-                                                            key={cat.slug}
-                                                            href={`/urunler/${productSlug}`}
-                                                            onClick={onClose}
-                                                            className="block px-3 py-2 text-base text-text-muted hover:text-primary hover:bg-cream rounded-lg transition-colors"
-                                                        >
-                                                            {getLocalized(cat.name, locale)}
-                                                        </Link>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
+                            <Link href="/ozel-cozumler" onClick={onClose} className="block px-4 py-3 text-sm font-medium text-foreground hover:text-primary hover:bg-surface-light rounded-lg transition-all">
+                                {t("customSolutions")}
+                            </Link>
 
-                                        {/* İç Mekan */}
-                                        <div className="pt-2">
-                                            <Link
-                                                href="/urunler"
-                                                onClick={onClose}
-                                                className="flex items-center gap-2 text-base font-semibold text-primary mb-2 hover:underline"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                                                    <polyline points="9 22 9 12 15 12 15 22" />
-                                                </svg>
-                                                {tCat("smokeSystems")}
-                                            </Link>
-                                            <div className="space-y-0.5">
-                                                {smokeSystemCategories.map((cat) => {
-                                                    const productSlug = getProductSlugByCategory(cat.slug);
-                                                    return (
-                                                        <Link
-                                                            key={cat.slug}
-                                                            href={`/urunler/${productSlug}`}
-                                                            onClick={onClose}
-                                                            className="block px-3 py-2 text-base text-text-muted hover:text-primary hover:bg-cream rounded-lg transition-colors"
-                                                        >
-                                                            {getLocalized(cat.name, locale)}
-                                                        </Link>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
+                            <Link href="/projeler" onClick={onClose} className="block px-4 py-3 text-sm font-medium text-foreground hover:text-primary hover:bg-surface-light rounded-lg transition-all">
+                                {t("projects")}
+                            </Link>
 
-                                        {/* Özel Çözümler */}
-                                        <div className="pt-2 border-t border-gray-100">
-                                            <Link
-                                                href="/ozel-cozumler"
-                                                onClick={onClose}
-                                                className="flex items-center gap-3 p-3 rounded-xl hover:bg-cream transition-colors group"
-                                            >
-                                                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                                                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-                                                        <path d="M19 3v4" />
-                                                        <path d="M21 5h-4" />
-                                                    </svg>
-                                                </div>
-                                                <div className="min-w-0">
-                                                    <span className="block text-base font-semibold text-text-dark group-hover:text-primary transition-colors">
-                                                        {t("customSolutions")}
-                                                    </span>
-                                                    <span className="block text-sm text-text-muted">
-                                                        {locale === "tr" ? "Projenize özel çözümler" : "Tailored solutions for your project"}
-                                                    </span>
-                                                </div>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-text-muted group-hover:text-primary transition-colors shrink-0">
-                                                    <path d="M5 12h14" />
-                                                    <path d="m12 5 7 7-7 7" />
-                                                </svg>
-                                            </Link>
-                                        </div>
+                            <Link href="/hakkimizda" onClick={onClose} className="block px-4 py-3 text-sm font-medium text-foreground hover:text-primary hover:bg-surface-light rounded-lg transition-all">
+                                {t("about")}
+                            </Link>
 
-                                        {/* Tüm Ürünler */}
-                                        <div className="py-2">
-                                            <Link
-                                                href="/urunler"
-                                                onClick={onClose}
-                                                className="flex items-center justify-center gap-2 py-2 text-base font-medium text-primary hover:underline"
-                                            >
-                                                {t("allProducts")}
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                    <path d="M5 12h14" />
-                                                    <path d="m12 5 7 7-7 7" />
-                                                </svg>
-                                            </Link>
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </div>
+                            <Link href="/iletisim" onClick={onClose} className="block px-4 py-3 text-sm font-medium text-foreground hover:text-primary hover:bg-surface-light rounded-lg transition-all">
+                                {t("contact")}
+                            </Link>
+                        </nav>
 
-                        {/* Hakkımızda */}
-                        <Link
-                            href="/hakkimizda"
-                            onClick={onClose}
-                            className={cn(
-                                "flex items-center px-4 py-2.5 text-base font-medium rounded-full transition-all duration-200",
-                                pathname === "/hakkimizda"
-                                    ? "text-primary"
-                                    : "text-text-dark/80 hover:text-primary"
-                            )}
-                        >
-                            {t("about")}
-                        </Link>
-
-                        {/* İletişim */}
-                        <Link
-                            href="/iletisim"
-                            onClick={onClose}
-                            className={cn(
-                                "flex items-center px-4 py-2.5 text-base font-medium rounded-full transition-all duration-200",
-                                pathname === "/iletisim"
-                                    ? "text-primary"
-                                    : "text-text-dark/80 hover:text-primary"
-                            )}
-                        >
-                            {t("contact")}
-                        </Link>
-
-                        {/* Arama */}
-                        {onSearch && (
-                            <button
-                                onClick={() => {
-                                    onSearch();
-                                    onClose();
-                                }}
-                                className="flex items-center gap-2.5 w-full px-4 py-2.5 text-base font-medium rounded-full text-text-dark/80 hover:text-primary transition-all duration-200 mt-2"
+                        {/* CTA */}
+                        <div className="p-6 pt-0">
+                            <Link
+                                href="/teklif-al"
+                                onClick={onClose}
+                                className="flex items-center justify-center gap-2 w-full px-5 py-3 bg-fire-gradient text-white text-sm font-semibold rounded-lg hover:shadow-lg hover:shadow-primary/30 transition-all"
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                >
-                                    <circle cx="11" cy="11" r="8" />
-                                    <path d="m21 21-4.3-4.3" />
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
-                                <span>{t("search")}</span>
-                            </button>
-                        )}
-                    </nav>
-
-                    {/* Footer - Dil + Teklif Alın (masaüstü ile aynı; dil dropdown yukarı açılır, ekran dışına taşmaz) */}
-                    <div className="p-5 border-t border-border-muted/50 space-y-4">
-                        <div className="flex items-center justify-between gap-3">
-                            <span className="text-sm text-text-muted">Dil</span>
-                            <LanguageSwitcher variant="dark" placement="top" />
+                                {t("getQuote")}
+                            </Link>
                         </div>
-                        <Link href="/teklif-al" onClick={onClose} className="block">
-                            <button
-                                className="inline-flex items-center justify-center gap-2 w-full py-2 px-3.5 text-sm font-medium rounded-full transition-all duration-200 shadow-md hover:shadow-lg"
-                                style={{ backgroundColor: "#8B7355", color: "#FFFFFF" }}
-                            >
-                                <span>{t("getQuote")}</span>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="14"
-                                    height="14"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="#FFFFFF"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                >
-                                    <path d="M5 12h14" />
-                                    <path d="m12 5 7 7-7 7" />
-                                </svg>
-                            </button>
-                        </Link>
-                    </div>
-                </div>
-            </motion.div>
-        </motion.div>
+                    </motion.div>
+                </>
+            )}
+        </AnimatePresence>
     );
 }

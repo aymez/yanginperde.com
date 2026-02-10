@@ -1,4 +1,5 @@
-export { default as Header } from "./Header";
-export { default as Footer } from "./Footer";
-export { default as MobileMenu } from "./MobileMenu";
-export { default as LanguageSwitcher } from "./LanguageSwitcher";
+export { Header } from "./Header";
+export { Footer } from "./Footer";
+export { MobileMenu } from "./MobileMenu";
+export { LanguageSwitcher } from "./LanguageSwitcher";
+export { TopBar } from "./TopBar";

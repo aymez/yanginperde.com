@@ -38,7 +38,14 @@
         "warranty": "Certified Production",
         "warrantyDesc": "International Standards",
         "delivery": "Professional Installation",
-        "deliveryTime": "Fast Installation"
+        "deliveryTime": "Fast Installation",
+        "advancedEngineering": "Advanced Fire Engineering",
+        "systemStatus": "System Status",
+        "online": "ACTIVE",
+        "fireIntegrity": "Fire Integrity (E)",
+        "radiationControl": "Radiation Control (W)",
+        "standard": "Standard",
+        "certifiedBy": "Certification"
     },
     "categories": {
         "title": "Our Product Categories",
@@ -46,28 +53,11 @@
         "viewAll": "View All",
         "viewMore": "Learn More",
         "fireSystems": "Fire Systems",
-        "smokeSystems": "Smoke Systems"
-    },
-    "whyUs": {
-        "description": "We design systems that don't just meet standards, but redefine them. Reliability at 1100°C is not an option; it is our baseline.",
-        "features": {
-            "tech1": {
-                "title": "STRUCTURAL AUTONOMY",
-                "desc": "Autonomous activation fully integrated with fire detection systems, requiring no human intervention."
-            },
-            "tech2": {
-                "title": "ARCHITECTURAL INTEGRATION",
-                "desc": "Maximum safety without compromising building aesthetics with invisible mounting details and minimal housing designs."
-            },
-            "tech3": {
-                "title": "INDUSTRIAL DURABILITY",
-                "desc": "Certified composite materials resistant to harsh industrial conditions, high heat, and pressure."
-            },
-            "tech4": {
-                "title": "CERTIFIED SAFETY",
-                "desc": "Tested according to EN 12101-1 and international standards, E120 and DH60 class approved protection."
-            }
-        }
+        "smokeSystems": "Smoke Systems",
+        "systemCatalog": "System Catalog",
+        "engineered": "Engineered",
+        "solutions": "Solutions",
+        "viewDetails": "View Details"
     },
     "featuredProducts": {
         "title": "Featured Products",
@@ -88,7 +78,105 @@
     "references": {
         "title": "Our Projects",
         "subtitle": "Examples from our successfully completed projects",
-        "viewAll": "View All Projects"
+        "viewAll": "View All Projects",
+        "globalApplications": "Global Applications",
+        "selected": "Selected",
+        "projects": "Projects",
+        "viewAllProjects": "View All Projects"
+    },
+    "specs": {
+        "technicalCompliance": "Technical Compliance",
+        "certified": "Certified",
+        "performance": "Performance",
+        "downloadDatasheets": "Download Datasheets",
+        "items": {
+            "fireIntegrity": {
+                "label": "Fire Integrity (E)",
+                "value": "Up to 120 minutes",
+                "standard": "EN 13501-2"
+            },
+            "radiation": {
+                "label": "Radiation (W)",
+                "value": "Up to 60 minutes",
+                "standard": "EN 13501-2"
+            },
+            "insulation": {
+                "label": "Insulation (I)",
+                "value": "Up to 120 minutes",
+                "standard": "EN 13501-2"
+            },
+            "smokeLeakage": {
+                "label": "Smoke Leakage",
+                "value": "Sa / S200 Compliant",
+                "standard": "EN 1634-3"
+            },
+            "reactionToFire": {
+                "label": "Reaction to Fire",
+                "value": "Class A1 / A2-s1,d0",
+                "standard": "EN 13501-1"
+            },
+            "closingSpeed": {
+                "label": "Closing Speed",
+                "value": "0.06 - 0.15 m/s",
+                "standard": "Controlled"
+            }
+        }
+    },
+    "howItWorks": {
+        "systemLogic": "System Logic",
+        "gravityFailSafe": "Gravity",
+        "mechanism": "Mechanism",
+        "step": "Step",
+        "statusLabel": "Status",
+        "headbox": "HEADBOX",
+        "stages": {
+            "0": {
+                "title": "Standby Mode",
+                "description": "System is concealed in the headbox, fully integrated into the structure.",
+                "status": "STANDBY"
+            },
+            "1": {
+                "title": "Alarm Triggered",
+                "description": "Gravity-controlled descent begins with fire alarm signal.",
+                "status": "ALARM"
+            },
+            "2": {
+                "title": "Safe Descent",
+                "description": "Curtain descends safely at a controlled speed by gravity.",
+                "status": "ACTIVE"
+            },
+            "3": {
+                "title": "Fire Isolation",
+                "description": "Area is sealed. Compartmentation is maintained for 120 minutes.",
+                "status": "SEALED"
+            }
+        }
+    },
+    "whyUs": {
+        "description": "We design systems that don't just meet standards, but redefine them. Reliability at 1100\u00b0C is not an option; it is our baseline.",
+        "features": {
+            "tech1": {
+                "title": "STRUCTURAL AUTONOMY",
+                "desc": "Autonomous activation fully integrated with fire detection systems, requiring no human intervention."
+            },
+            "tech2": {
+                "title": "ARCHITECTURAL INTEGRATION",
+                "desc": "Maximum safety without compromising building aesthetics with invisible mounting details and minimal housing designs."
+            },
+            "tech3": {
+                "title": "INDUSTRIAL DURABILITY",
+                "desc": "Certified composite materials resistant to harsh industrial conditions, high heat, and pressure."
+            },
+            "tech4": {
+                "title": "CERTIFIED SAFETY",
+                "desc": "Tested according to EN 12101-1 and international standards, E120 and DH60 class approved protection."
+            }
+        },
+        "manufacturingExcellence": "Manufacturing Excellence",
+        "precision": "Precision",
+        "engineering": "Engineering.",
+        "cyclesTested": "Cycles Tested",
+        "factoryCompliance": "Factory Compliance"
     },
     "process": {
         "title": "PROJECT LIFECYCLE",
@@ -138,6 +226,10 @@
     "products": {
         "title": "Our Products",
         "subtitle": "Discover fire safety solutions that suit your needs",
+        "catalog": "Product Catalog",
+        "all": "All",
+        "featured": "Featured",
+        "viewDetails": "View Details",
         "filter": {
             "all": "All",
             "zipScreen": "Fire Curtain",
@@ -158,6 +250,7 @@
         "advantages": "Advantages",
         "relatedProducts": "Related Products",
         "getQuote": "Get Quote",
+        "backToProducts": "Back to Products",
         "downloadCatalog": "Download Catalog",
         "breadcrumb": {
             "home": "Home",
@@ -166,16 +259,27 @@
     },
     "about": {
         "title": "About Us",
+        "badge": "About Us",
         "subtitle": "Fire safety is not just a product; it is the most important investment protecting human life.",
         "experienceYears": "25+",
         "experienceLabel": "Years of Industry Experience",
         "story": {
+            "label": "Our Story",
+            "title": "25 Years of Fire Safety Experience",
+            "content": "YANGIN PERDE combines more than 25 years of sector knowledge and field experience with modern building fire safety needs to develop functional, durable, and high-quality standard solutions.",
+            "content2": "From residential projects to large-scale commercial buildings; from hospitals to industrial facilities, from educational buildings to special architectural applications, we handle every project with the same seriousness and rigor.",
             "p1": "YANGIN PERDE combines more than 25 years of sector knowledge and field experience with modern building fire safety needs to develop functional, durable, and high-quality standard solutions.",
             "p2": "From residential projects to large-scale commercial buildings; from hospitals to industrial facilities, from educational buildings to special architectural applications, we handle every project with the same seriousness and rigor.",
             "p3": "In every project, we evaluate the fire scenario, purpose of use, architectural compatibility, and international standards (EN, UL, etc.) together; we aim to produce systems that not only comply with procedures but also ensure full life safety.",
             "p4": "In design, production, and implementation processes, we work with architects, engineers, and fire consultants in a common-sense approach; we develop project-specific, correct, and sustainable systems rather than standard solutions.",
             "p5": "With our approach that views quality not as a choice but as a necessity; we care about establishing long-term partnerships in product reliability, correct technical details, and after-sales support.",
             "p6": "Today, we continue our way as a structure offering more refined, more selective, and upper-segment solutions on the solid foundation provided by past experience."
+        },
+        "timeline": {
+            "title": "Our History"
+        },
+        "certifications": {
+            "title": "Our Certifications"
         },
         "valuesSection": {
             "title": "Our Values & Working Principles",
@@ -210,9 +314,37 @@
             "title": "Custom Solutions | YANGIN PERDE",
             "description": "Project-specific fire and smoke control solutions: Fire consulting, custom production and technical support."
         },
+        "badge": "Custom Solutions",
         "title": "Custom Solutions",
         "subtitle": "We develop project-specific solutions for complex architectural structures and special fire scenarios.",
         "intro": "Every building's fire risk analysis is different. As YANGIN PERDE, we offer special solutions suitable for your architectural project and fire scenario.",
+        "process": {
+            "title": "Our Process",
+            "steps": {
+                "0": {
+                    "title": "Needs Analysis",
+                    "description": "Determining your project's fire risk analysis and needs."
+                },
+                "1": {
+                    "title": "Technical Design",
+                    "description": "Detailed technical design according to architectural compatibility and standards."
+                },
+                "2": {
+                    "title": "Custom Production",
+                    "description": "Certified production in project-specific sizes and features."
+                },
+                "3": {
+                    "title": "Installation & Delivery",
+                    "description": "Installation, testing and commissioning with expert team."
+                }
+            }
+        },
+        "cta": {
+            "title": "Let's Take the Next Step for Your Project",
+            "description": "Let's evaluate your custom solution needs together.",
+            "button": "Get a Quote",
+            "contact": "Contact Us"
+        },
         "services": {
             "consulting": {
                 "title": "Project Consulting",
@@ -233,7 +365,9 @@
     },
     "projects": {
         "title": "References",
+        "badge": "Our Projects",
         "subtitle": "Examples from our successfully completed projects",
+        "all": "All",
         "filter": {
             "all": "All",
             "residential": "Residential",
@@ -245,9 +379,11 @@
     },
     "contact": {
         "title": "Contact",
+        "badge": "Contact",
         "subtitle": "We look forward to getting in touch with you",
         "getInTouch": "Get in Touch",
         "form": {
+            "title": "Send a Message",
             "name": "Full Name",
             "email": "Email",
             "phone": "Phone",
@@ -264,15 +400,61 @@
         },
         "info": {
             "title": "Contact Information",
-            "address": "Hamidiye Mah. Kemerburgaz Cad. No: 152/6, Kağıthane - Istanbul, Turkey",
-            "phone": "0212 294 82 80",
+            "address": "Address",
+            "phone": "Phone",
             "fax": "+90 (212) 123 45 67",
             "getQuote": "Get Quote",
             "mobile": "0532 294 34 36",
-            "email": "info@yanginperde.com",
+            "email": "Email",
             "workingHours": "Working Hours",
             "weekdays": "Monday - Saturday: 09:00 - 18:00",
             "weekend": "Sunday: Closed"
+        }
+    },
+    "quote": {
+        "meta": {
+            "title": "Get a Quote | YANGIN PERDE",
+            "description": "Get a free quote for fire and smoke control systems."
+        },
+        "badge": "Get Quote",
+        "title": "Get a Free Quote",
+        "subtitle": "Let's determine the most suitable fire and smoke control solution for your project.",
+        "form": {
+            "name": "Full Name",
+            "email": "Email",
+            "phone": "Phone",
+            "product": "Product Category",
+            "productPlaceholder": "Select a product...",
+            "area": "Area (m\u00b2)",
+            "areaPlaceholder": "Enter total area",
+            "address": "Address",
+            "addressPlaceholder": "Project address",
+            "message": "Message",
+            "messagePlaceholder": "Additional details...",
+            "submit": "Request a Quote",
+            "sending": "Sending...",
+            "success": "Your request has been received!",
+            "successDesc": "We will contact you as soon as possible.",
+            "sendAnother": "Request Another Quote",
+            "recaptchaRequired": "Please verify you are not a robot"
+        },
+        "categories": {
+            "outdoor": "\u2014 Outdoor \u2014",
+            "verticalZip": "Vertical Zip Curtain",
+            "horizontalZip": "Horizontal Zip Curtain",
+            "pergola": "Bioclimatic Pergola",
+            "awning": "Awning Systems",
+            "glassBalcony": "Glass Balcony",
+            "insectScreen": "Insect Screen",
+            "indoor": "\u2014 Indoor \u2014",
+            "roller": "Roller Blind",
+            "screenRoller": "Screen Roller",
+            "blackout": "Blackout Blind",
+            "zebra": "Zebra Blind",
+            "venetian": "Venetian Blind",
+            "vertical": "Vertical Blind",
+            "drapery": "Drapery",
+            "other": "Other"
         }
     },
     "legal": {

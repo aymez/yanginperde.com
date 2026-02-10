@@ -7,11 +7,12 @@ import { useTranslations } from "next-intl";
 // reCAPTCHA v2 site key (production)
 const RECAPTCHA_SITE_KEY = "6LfXFmQsAAAAACfYiYNA4zSDPU2IhdpZmczqSY8_";
 
-export default function QuoteForm() {
+const inputClasses = "w-full px-4 py-3.5 bg-surface-light border border-border/50 rounded-xl text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/30 focus:border-primary/50 focus:bg-surface transition-all duration-200";
+
+export function QuoteForm() {
     const t = useTranslations("quote.form");
     const tCat = useTranslations("quote.categories");
 
-    // Ürün kategorileri (Çevirili)
     const PRODUCT_CATEGORIES = [
         { value: "", label: t("productPlaceholder"), disabled: true },
         { value: "dis-mekan", label: tCat("outdoor"), disabled: true },
@@ -33,13 +34,7 @@ export default function QuoteForm() {
     ];
 
     const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        phone: "",
-        product: "",
-        area: "",
-        address: "",
-        message: "",
+        name: "", email: "", phone: "", product: "", area: "", address: "", message: "",
     });
 
     const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
@@ -47,112 +42,68 @@ export default function QuoteForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState("");
-
     const recaptchaRef = useRef<number | null>(null);
 
-    // reCAPTCHA script yükleme
     useEffect(() => {
         if (document.querySelector('script[src*="recaptcha"]')) {
-            if (window.grecaptcha) {
-                setRecaptchaLoaded(true);
-            }
+            if (window.grecaptcha) setRecaptchaLoaded(true);
             return;
         }
-
-        window.onRecaptchaLoad = () => {
-            setRecaptchaLoaded(true);
-        };
-
+        window.onRecaptchaLoad = () => setRecaptchaLoaded(true);
         const script = document.createElement('script');
         script.src = `https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit`;
         script.async = true;
         script.defer = true;
         document.head.appendChild(script);
-
         return () => {
             if (recaptchaRef.current !== null && window.grecaptcha) {
-                try {
-                    window.grecaptcha.reset(recaptchaRef.current);
-                } catch (e) {
-                    console.error("reCAPTCHA reset error:", e);
-                }
+                try { window.grecaptcha.reset(recaptchaRef.current); } catch (e) { console.error("reCAPTCHA reset error:", e); }
             }
         };
     }, []);
 
-    // reCAPTCHA widget render
     useEffect(() => {
         if (recaptchaLoaded && window.grecaptcha && recaptchaRef.current === null) {
             try {
                 const container = document.getElementById('recaptcha-container');
                 if (container) {
-                    const widgetId = window.grecaptcha.render(container, {
+                    recaptchaRef.current = window.grecaptcha.render(container, {
                         sitekey: RECAPTCHA_SITE_KEY,
-                        callback: (token: string) => {
-                            setRecaptchaToken(token);
-                        },
-                        'expired-callback': () => {
-                            setRecaptchaToken(null);
-                        },
+                        callback: (token: string) => setRecaptchaToken(token),
+                        'expired-callback': () => setRecaptchaToken(null),
+                        theme: 'dark',
                     });
-                    recaptchaRef.current = widgetId;
                 }
-            } catch (error) {
-                console.error("reCAPTCHA render error:", error);
-            }
+            } catch (error) { console.error("reCAPTCHA render error:", error); }
         }
     }, [recaptchaLoaded]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        setFormData(prev => ({
-            ...prev,
-            [e.target.name]: e.target.value
-        }));
+        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        if (!recaptchaToken) {
-            setErrorMessage(t("recaptchaRequired"));
-            return;
-        }
-
+        if (!recaptchaToken) { setErrorMessage(t("recaptchaRequired")); return; }
         setIsSubmitting(true);
         setErrorMessage("");
-
         try {
             const response = await fetch("/api/quote", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    ...formData,
-                    recaptchaToken,
-                }),
+                body: JSON.stringify({ ...formData, recaptchaToken }),
             });
-
             const data = await response.json();
-
             if (data.success) {
                 setSubmitStatus("success");
-                setFormData({
-                    name: "",
-                    email: "",
-                    phone: "",
-                    product: "",
-                    area: "",
-                    address: "",
-                    message: "",
-                });
-                if (recaptchaRef.current !== null && window.grecaptcha) {
-                    window.grecaptcha.reset(recaptchaRef.current);
-                }
+                setFormData({ name: "", email: "", phone: "", product: "", area: "", address: "", message: "" });
+                if (recaptchaRef.current !== null && window.grecaptcha) window.grecaptcha.reset(recaptchaRef.current);
                 setRecaptchaToken(null);
             } else {
                 setSubmitStatus("error");
                 setErrorMessage(data.error || "Bir hata oluştu");
             }
-        } catch (error) {
+        } catch {
             setSubmitStatus("error");
             setErrorMessage("Bağlantı hatası. Lütfen tekrar deneyin.");
         } finally {
@@ -162,26 +113,15 @@ export default function QuoteForm() {
 
     if (submitStatus === "success") {
         return (
-            <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="bg-white rounded-2xl p-8 md:p-12 shadow-xl text-center"
-            >
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-12">
+                <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
-                <h3 className="text-2xl font-display font-medium text-anthracite-dark mb-4">
-                    {t("success")}
-                </h3>
-                <p className="text-text-muted mb-8">
-                    {t("successDesc")}
-                </p>
-                <button
-                    onClick={() => setSubmitStatus("idle")}
-                    className="px-8 py-3 bg-anthracite-dark text-white rounded-full hover:bg-primary transition-all duration-300"
-                >
+                <h3 className="text-2xl font-display font-bold text-foreground mb-4">{t("success")}</h3>
+                <p className="text-muted-foreground mb-8">{t("successDesc")}</p>
+                <button onClick={() => setSubmitStatus("idle")} className="px-8 py-3 bg-fire-gradient text-white rounded-xl hover:shadow-lg hover:shadow-primary/30 font-medium transition-all">
                     {t("sendAnother")}
                 </button>
             </motion.div>
@@ -189,152 +129,68 @@ export default function QuoteForm() {
     }
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-white rounded-2xl p-8 md:p-12 shadow-xl"
-        >
-            <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Ad Soyad */}
+        <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+                <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">{t("name")} <span className="text-primary">*</span></label>
+                <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required className={inputClasses} placeholder={t("name")} />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-text-dark mb-2">
-                        {t("name")} <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                        placeholder={t("name")}
-                    />
+                    <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">{t("email")} <span className="text-primary">*</span></label>
+                    <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required className={inputClasses} placeholder="example@email.com" />
                 </div>
-
-                {/* Email & Telefon */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-text-dark mb-2">
-                            {t("email")} <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                            placeholder="example@email.com"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-text-dark mb-2">
-                            {t("phone")} <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                            placeholder="05XX XXX XX XX"
-                        />
-                    </div>
-                </div>
-
-                {/* Ürün Kategorisi */}
                 <div>
-                    <label htmlFor="product" className="block text-sm font-medium text-text-dark mb-2">
-                        {t("product")} <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                        id="product"
-                        name="product"
-                        value={formData.product}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                    >
-                        {PRODUCT_CATEGORIES.map(cat => (
-                            <option key={cat.value} value={cat.value} disabled={cat.disabled}>{cat.label}</option>
-                        ))}
-                    </select>
+                    <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">{t("phone")} <span className="text-primary">*</span></label>
+                    <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required className={inputClasses} placeholder="05XX XXX XX XX" />
                 </div>
+            </div>
 
-                {/* Alan (m²) */}
-                <div>
-                    <label htmlFor="area" className="block text-sm font-medium text-text-dark mb-2">
-                        {t("area")}
-                    </label>
-                    <input
-                        type="text"
-                        id="area"
-                        name="area"
-                        value={formData.area}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                        placeholder={t("areaPlaceholder")}
-                    />
-                </div>
-
-                {/* Adres */}
-                <div>
-                    <label htmlFor="address" className="block text-sm font-medium text-text-dark mb-2">
-                        {t("address")}
-                    </label>
-                    <input
-                        type="text"
-                        id="address"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                        placeholder={t("addressPlaceholder")}
-                    />
-                </div>
-
-                {/* Mesaj */}
-                <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-text-dark mb-2">
-                        {t("message")}
-                    </label>
-                    <textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        rows={4}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
-                        placeholder={t("messagePlaceholder")}
-                    />
-                </div>
-
-                {/* reCAPTCHA */}
-                <div className="flex justify-center">
-                    <div id="recaptcha-container"></div>
-                </div>
-
-                {/* Hata Mesajı */}
-                {errorMessage && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                        {errorMessage}
-                    </div>
-                )}
-
-                {/* Submit Button */}
-                <button
-                    type="submit"
-                    disabled={isSubmitting || !recaptchaToken}
-                    className="w-full px-8 py-4 bg-anthracite-dark text-white rounded-full font-medium transition-all duration-300 hover:bg-primary hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            <div>
+                <label htmlFor="product" className="block text-sm font-medium text-foreground mb-2">{t("product")} <span className="text-primary">*</span></label>
+                <select id="product" name="product" value={formData.product} onChange={handleChange} required className={`${inputClasses} appearance-none cursor-pointer`}
+                    style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'right 16px center',
+                    }}
                 >
-                    {isSubmitting ? t("sending") : t("submit")}
-                </button>
-            </form>
-        </motion.div>
+                    {PRODUCT_CATEGORIES.map(cat => <option key={cat.value} value={cat.value} disabled={cat.disabled}>{cat.label}</option>)}
+                </select>
+            </div>
+
+            <div>
+                <label htmlFor="area" className="block text-sm font-medium text-foreground mb-2">{t("area")}</label>
+                <input type="text" id="area" name="area" value={formData.area} onChange={handleChange} className={inputClasses} placeholder={t("areaPlaceholder")} />
+            </div>
+
+            <div>
+                <label htmlFor="address" className="block text-sm font-medium text-foreground mb-2">{t("address")}</label>
+                <input type="text" id="address" name="address" value={formData.address} onChange={handleChange} className={inputClasses} placeholder={t("addressPlaceholder")} />
+            </div>
+
+            <div>
+                <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">{t("message")}</label>
+                <textarea id="message" name="message" value={formData.message} onChange={handleChange} rows={4} className={`${inputClasses} resize-none`} placeholder={t("messagePlaceholder")} />
+            </div>
+
+            <div className="flex justify-center">
+                <div id="recaptcha-container" />
+            </div>
+
+            {errorMessage && (
+                <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl text-sm">{errorMessage}</div>
+            )}
+
+            <motion.button
+                type="submit"
+                disabled={isSubmitting || !recaptchaToken}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                className="w-full py-4 bg-fire-gradient text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+            >
+                {isSubmitting ? t("sending") : t("submit")}
+            </motion.button>
+        </form>
     );
 }

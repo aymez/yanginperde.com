@@ -281,6 +281,10 @@
     "products": {
         "title": "Ürünlerimiz",
         "subtitle": "İhtiyacınıza uygun yangın güvenlik çözümlerini keşfedin",
+        "catalog": "Ürün Kataloğu",
+        "all": "Tümü",
+        "featured": "Öne Çıkan",
+        "viewDetails": "Detayları İncele",
         "filter": {
             "all": "Tümü",
             "zipScreen": "Yangın Perdesi",
@@ -301,6 +305,7 @@
         "advantages": "Avantajlar",
         "relatedProducts": "Benzer Ürünler",
         "getQuote": "Teklif İste",
+        "backToProducts": "Ürünlere Dön",
         "downloadCatalog": "Katalog İndir",
         "breadcrumb": {
             "home": "Ana Sayfa",
@@ -309,16 +314,27 @@
     },
     "about": {
         "title": "Hakkımızda",
+        "badge": "Hakkımızda",
         "subtitle": "Yangın güvenliği sadece bir ürün değil; insan hayatını koruyan en önemli yatırımdır.",
         "experienceYears": "25+",
         "experienceLabel": "Yıl Sektör Tecrübesi",
         "story": {
+            "label": "Hikayemiz",
+            "title": "25 Yıllık Tecrübe ile Yangın Güvenliği",
+            "content": "YANGIN PERDE, 25 yılı aşkın sektör bilgisi ve saha tecrübesiyle, modern binaların yangın güvenliği ihtiyaçlarına yönelik fonksiyonel, dayanıklı ve yüksek kalite standartlarında çözümler geliştirmektedir.",
+            "content2": "Konut projelerinden büyük ölçekli ticari yapılara; hastanelerden endüstriyel tesislere, eğitim binalarından özel mimari uygulamalara kadar her projeyi aynı ciddiyet ve titizlikle ele alıyoruz.",
             "p1": "YANGIN PERDE, 25 yılı aşkın sektör bilgisi ve saha tecrübesiyle, modern binaların yangın güvenliği ihtiyaçlarına yönelik fonksiyonel, dayanıklı ve yüksek kalite standartlarında çözümler geliştirmektedir.",
             "p2": "Konut projelerinden büyük ölçekli ticari yapılara; hastanelerden endüstriyel tesislere, eğitim binalarından özel mimari uygulamalara kadar her projeyi aynı ciddiyet ve titizlikle ele alıyoruz.",
             "p3": "Her projede yangın senaryosu, kullanım amacı, mimari uyum ve uluslararası standartları (EN, UL vb.) birlikte değerlendiriyor; sadece prosedürlere uygun değil, hayati güvenliği tam sağlayan sistemler üretiyoruz.",
             "p4": "Tasarım, üretim ve uygulama süreçlerinde mimarlar, mühendisler ve yangın danışmanları ile ortak akıl çerçevesinde çalışıyor; standart çözümler yerine projeye özel, doğru ve sürdürülebilir sistemler geliştiriyoruz.",
             "p5": "Kaliteyi bir tercih değil, zorunluluk olarak gören anlayışımızla; ürün güvenilirliği, doğru teknik detay ve satış sonrası destek konularında uzun soluklu iş birlikleri kurmayı önemsiyoruz.",
             "p6": "Geçmişin tecrübesinin sağladığı sağlam zemin üzerinde, daha rafine, daha seçici ve üst segment çözümler sunan bir yapı olarak yolumuza devam ediyoruz."
+        },
+        "timeline": {
+            "title": "Tarihçemiz"
+        },
+        "certifications": {
+            "title": "Sertifikalarımız"
         },
         "valuesSection": {
             "title": "Değerlerimiz & Çalışma Prensiplerimiz",
@@ -353,9 +369,37 @@
             "title": "Özel Çözümler | YANGIN PERDE",
             "description": "Projeye özel yangın ve duman kontrol çözümleri: Yangın danışmanlığı, özel üretim ve teknik destek."
         },
+        "badge": "Özel Çözümler",
         "title": "Özel Çözümler",
         "subtitle": "Karmaşık mimari yapılar ve özel yangın senaryoları için projeye özel çözümler geliştiriyoruz.",
         "intro": "Her binanın yangın risk analizi farklıdır. YANGIN PERDE olarak, mimari projenize ve yangın senaryonuza uygun özel çözümler sunuyoruz.",
+        "process": {
+            "title": "Çalışma Sürecimiz",
+            "steps": {
+                "0": {
+                    "title": "İhtiyaç Analizi",
+                    "description": "Projenizin yangın risk analizi ve ihtiyaçlarının belirlenmesi."
+                },
+                "1": {
+                    "title": "Teknik Proje",
+                    "description": "Mimari uyum ve standartlara göre detaylı teknik projelendirme."
+                },
+                "2": {
+                    "title": "Özel Üretim",
+                    "description": "Projeye özel ölçü ve özelliklerde sertifikalı üretim."
+                },
+                "3": {
+                    "title": "Kurulum & Teslim",
+                    "description": "Uzman ekiple montaj, test ve devreye alma."
+                }
+            }
+        },
+        "cta": {
+            "title": "Projeniz İçin Bir Sonraki Adımı Atalım",
+            "description": "Özel çözüm ihtiyaçlarınızı birlikte değerlendirelim.",
+            "button": "Teklif İsteyin",
+            "contact": "İletişime Geçin"
+        },
         "services": {
             "consulting": {
                 "title": "Proje Danışmanlığı",
@@ -376,7 +420,9 @@
     },
     "projects": {
         "title": "Referanslar",
+        "badge": "Projelerimiz",
         "subtitle": "Başarıyla tamamlanan projelerimizden örnekler",
+        "all": "Tümü",
         "filter": {
             "all": "Tümü",
             "residential": "Konut",
@@ -388,9 +434,11 @@
     },
     "contact": {
         "title": "İletişim",
+        "badge": "İletişim",
         "subtitle": "Sizinle iletişime geçmek için sabırsızlanıyoruz",
         "getInTouch": "Bize Ulaşın",
         "form": {
+            "title": "Mesaj Gönderin",
             "name": "Ad Soyad",
             "email": "E-posta",
             "phone": "Telefon",
@@ -407,13 +455,59 @@
         },
         "info": {
             "title": "İletişim Bilgileri",
-            "address": "Hamidiye Mah. Kemerburgaz Cad. No: 152/6, Kağıthane - İstanbul, Türkiye",
-            "phone": "0212 294 82 80",
+            "address": "Adres",
+            "phone": "Telefon",
             "mobile": "0532 294 34 36",
-            "email": "info@yanginperde.com",
+            "email": "E-posta",
             "workingHours": "Çalışma Saatleri",
             "weekdays": "Pazartesi - Cumartesi: 09:00 - 18:00",
             "weekend": "Pazar: Kapalı"
+        }
+    },
+    "quote": {
+        "meta": {
+            "title": "Teklif Al | YANGIN PERDE",
+            "description": "Yangın ve duman kontrol sistemleri için ücretsiz teklif alın."
+        },
+        "badge": "Teklif Al",
+        "title": "Ücretsiz Teklif Alın",
+        "subtitle": "Projeniz için en uygun yangın ve duman kontrol çözümünü birlikte belirleyelim.",
+        "form": {
+            "name": "Ad Soyad",
+            "email": "E-posta",
+            "phone": "Telefon",
+            "product": "Ürün Kategorisi",
+            "productPlaceholder": "Ürün seçiniz...",
+            "area": "Alan (m²)",
+            "areaPlaceholder": "Toplam alan giriniz",
+            "address": "Adres",
+            "addressPlaceholder": "Proje adresi",
+            "message": "Mesaj",
+            "messagePlaceholder": "Ek detaylar...",
+            "submit": "Teklif İsteyin",
+            "sending": "Gönderiliyor...",
+            "success": "Talebiniz alındı!",
+            "successDesc": "En kısa sürede sizinle iletişime geçeceğiz.",
+            "sendAnother": "Yeni Teklif İsteyin",
+            "recaptchaRequired": "Lütfen robot olmadığınızı doğrulayın"
+        },
+        "categories": {
+            "outdoor": "— Dış Mekan —",
+            "verticalZip": "Dikey Zip Perde",
+            "horizontalZip": "Yatay Zip Perde",
+            "pergola": "Bioklimatik Pergola",
+            "awning": "Tente Sistemleri",
+            "glassBalcony": "Cam Balkon",
+            "insectScreen": "Sineklik",
+            "indoor": "— İç Mekan —",
+            "roller": "Stor Perde",
+            "screenRoller": "Screen Stor",
+            "blackout": "Blackout Perde",
+            "zebra": "Zebra Perde",
+            "venetian": "Jaluzi Perde",
+            "vertical": "Dikey Perde",
+            "drapery": "Mefruşat Perde",
+            "other": "Diğer"
         }
     },
     "legal": {

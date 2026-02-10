@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { Barlow, Oswald, JetBrains_Mono } from "next/font/google";
+import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { routing } from "@/i18n/routing";
 import { Header, Footer } from "@/components/layout";
 import { COMPANY_INFO } from "@/lib/constants";
@@ -51,16 +51,16 @@ const organizationSchema = {
     ].filter(Boolean),
 };
 
-const barlow = Barlow({
+const inter = Inter({
     subsets: ["latin"],
-    weight: ["400", "500", "600"],
-    variable: "--font-barlow",
+    weight: ["400", "500", "600", "700"],
+    variable: "--font-inter",
     display: "swap",
 });
 
-const oswald = Oswald({
+const spaceGrotesk = Space_Grotesk({
     subsets: ["latin"],
-    variable: "--font-oswald",
+    variable: "--font-space-grotesk",
     display: "swap",
 });
 
@@ -95,14 +95,14 @@ export default async function LocaleLayout({
     const messages = await getMessages();
 
     return (
-        <html lang={locale} className={`${barlow.variable} ${oswald.variable} ${jetbrains.variable}`}>
+        <html lang={locale} className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrains.variable}`}>
             <head>
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
                 />
             </head>
-            <body className="font-sans antialiased">
+            <body className="font-sans antialiased bg-background text-foreground">
                 <NextIntlClientProvider messages={messages}>
                     <Header />
                     <main id="main-content">{children}</main>

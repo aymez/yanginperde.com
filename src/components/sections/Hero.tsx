@@ -1,143 +1,222 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { motion } from "framer-motion";
+import { STATISTICS } from "@/lib/constants";
+import { useLocale } from "next-intl";
 
-export default function Hero() {
+export function Hero() {
     const t = useTranslations("hero");
+    const locale = useLocale();
 
     return (
-        <section className="relative h-screen flex items-center overflow-hidden bg-white text-foreground selection:bg-primary selection:text-white">
-
-            {/* Background: Clean Slate Grid */}
-            <div className="absolute inset-0 bg-grid-pattern opacity-40"></div>
-
-            {/* Soft Ambient Gradient */}
-            <div className="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-slate-50 via-slate-50/50 to-transparent"></div>
-
-            <div className="container relative z-10 mx-auto px-4 md:px-8 grid lg:grid-cols-12 gap-12 items-center h-full pt-20">
-
-                {/* Left Content */}
-                <div className="lg:col-span-7 flex flex-col justify-center">
-
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className="mb-6 flex items-center gap-4"
-                    >
-                        <div className="px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-primary font-mono text-xs font-bold tracking-wider uppercase">
-                            {t("advancedEngineering")}
-                        </div>
-                    </motion.div>
-
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-5xl md:text-7xl lg:text-8xl font-display font-bold leading-[1.1] tracking-tight mb-8 text-slate-900"
-                    >
-                        Invisible <br />
-                        <span className="text-slate-400">Protection.</span>
-                    </motion.h1>
-
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="text-lg text-slate-600 max-w-xl font-normal leading-relaxed mb-10"
-                    >
-                        {t("subtitle") || "Architecturally integrated fire and smoke strategies designed for modern living environments."}
-                    </motion.p>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
-                        className="flex items-center gap-4"
-                    >
-                        <Link href="/urunler">
-                            <button className="px-8 py-4 bg-slate-900 text-white rounded-lg font-display font-medium tracking-wide hover:bg-primary transition-colors hover:shadow-lg shadow-md">
-                                {t("primaryButton") || "View Systems"}
-                            </button>
-                        </Link>
-                        <Link href="/iletisim">
-                            <button className="px-8 py-4 border border-slate-200 text-slate-700 bg-white rounded-lg font-display font-medium tracking-wide hover:border-slate-300 hover:bg-slate-50 transition-colors shadow-sm">
-                                {t("secondaryButton") || "Contact Support"}
-                            </button>
-                        </Link>
-                    </motion.div>
-
-                </div>
-
-                {/* Right Content: Friendly Tech Visualization */}
-                <div className="lg:col-span-5 relative h-full hidden lg:flex items-center justify-center">
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1, delay: 0.5 }}
-                        className="relative z-10 w-full max-w-md"
-                    >
-                        {/* Soft Tech Card */}
-                        <div className="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-xl rounded-2xl p-8 relative overflow-hidden">
-                            {/* Decorative Line */}
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-slate-400"></div>
-
-                            <div className="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
-                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t("systemStatus")}</span>
-                                <div className="flex items-center gap-2 bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                    <span className="text-[10px] font-bold text-emerald-600">{t("online")}</span>
-                                </div>
-                            </div>
-
-                            <div className="space-y-6">
-                                <div>
-                                    <div className="flex justify-between text-sm mb-2">
-                                        <span className="text-slate-500 font-medium">{t("fireIntegrity")}</span>
-                                        <span className="text-slate-900 font-bold font-mono">120 MIN</span>
-                                    </div>
-                                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                                        <motion.div
-                                            initial={{ width: 0 }}
-                                            animate={{ width: "100%" }}
-                                            transition={{ duration: 1.5, delay: 1 }}
-                                            className="h-full bg-primary rounded-full"
-                                        ></motion.div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="flex justify-between text-sm mb-2">
-                                        <span className="text-slate-500 font-medium">{t("radiationControl")}</span>
-                                        <span className="text-slate-900 font-bold font-mono">60 MIN</span>
-                                    </div>
-                                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                                        <motion.div
-                                            initial={{ width: 0 }}
-                                            animate={{ width: "60%" }}
-                                            transition={{ duration: 1.5, delay: 1.2 }}
-                                            className="h-full bg-slate-400 rounded-full"
-                                        ></motion.div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between items-end">
-                                <div>
-                                    <div className="text-[10px] text-slate-400 font-bold uppercase mb-1">{t("standard")}</div>
-                                    <div className="text-lg font-display text-slate-800 font-bold">EN 1634-1</div>
-                                </div>
-                                <div className="text-right">
-                                    <div className="text-[10px] text-slate-400 font-bold uppercase mb-1">{t("certifiedBy")}</div>
-                                    <div className="text-lg font-display text-slate-800 font-bold">UL / EFECTIS</div>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                </div>
+        <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background">
+            {/* Background Image with Dark Overlay */}
+            <div className="absolute inset-0">
+                <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: "url(/images/hero-bg.png)" }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/60" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/30" />
             </div>
 
+            {/* Grid Pattern Overlay */}
+            <div className="absolute inset-0 bg-grid-fire opacity-40" />
+
+            {/* Animated Ember Particles */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {[...Array(6)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute w-1 h-1 rounded-full bg-primary/60"
+                        initial={{
+                            x: Math.random() * 100 + "%",
+                            y: "100%",
+                            opacity: 0,
+                        }}
+                        animate={{
+                            y: "-10%",
+                            opacity: [0, 1, 0],
+                        }}
+                        transition={{
+                            duration: 4 + Math.random() * 3,
+                            repeat: Infinity,
+                            delay: Math.random() * 5,
+                            ease: "easeOut",
+                        }}
+                    />
+                ))}
+            </div>
+
+            {/* Content */}
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32 w-full">
+                <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    {/* Left Side - Text */}
+                    <div>
+                        {/* Badge */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="inline-flex items-center gap-2 px-4 py-2 glass-fire rounded-full mb-8"
+                        >
+                            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                            <span className="text-xs font-medium text-primary uppercase tracking-wider">
+                                {t("badge")}
+                            </span>
+                        </motion.div>
+
+                        {/* Title */}
+                        <motion.h1
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
+                            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-[1.1] mb-6"
+                        >
+                            <span className="text-foreground">{t("title")}</span>
+                            <br />
+                            <span className="text-fire-gradient">{t("titleHighlight")}</span>
+                        </motion.h1>
+
+                        {/* Subtitle */}
+                        <motion.p
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            className="text-lg text-muted-foreground max-w-lg mb-10 leading-relaxed"
+                        >
+                            {t("subtitle")}
+                        </motion.p>
+
+                        {/* CTA Buttons */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                            className="flex flex-col sm:flex-row gap-4"
+                        >
+                            <Link
+                                href="/urunler"
+                                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-fire-gradient text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02] animate-pulse-fire"
+                            >
+                                {t("ctaPrimary")}
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                            </Link>
+                            <Link
+                                href="/iletisim"
+                                className="inline-flex items-center justify-center gap-2 px-8 py-4 glass text-foreground font-semibold rounded-xl hover:bg-surface-light transition-all duration-300"
+                            >
+                                {t("ctaSecondary")}
+                            </Link>
+                        </motion.div>
+                    </div>
+
+                    {/* Right Side - Stats Card */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 40 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                        className="hidden lg:block"
+                    >
+                        <div className="glass rounded-2xl p-8 space-y-6">
+                            {/* System Status Header */}
+                            <div className="flex items-center justify-between border-b border-border/50 pb-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+                                    <span className="font-mono text-xs text-muted-foreground uppercase tracking-wider">
+                                        {t("systemStatus")}
+                                    </span>
+                                </div>
+                                <span className="font-mono text-xs text-green-400">{t("online")}</span>
+                            </div>
+
+                            {/* Technical Specs */}
+                            <div className="space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-sm text-muted-foreground">{t("fireIntegrity")}</span>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-24 h-2 bg-surface-light rounded-full overflow-hidden">
+                                            <motion.div
+                                                className="h-full bg-fire-gradient rounded-full"
+                                                initial={{ width: 0 }}
+                                                animate={{ width: "100%" }}
+                                                transition={{ duration: 2, delay: 0.5 }}
+                                            />
+                                        </div>
+                                        <span className="font-mono text-xs text-primary">E120</span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-sm text-muted-foreground">{t("radiationControl")}</span>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-24 h-2 bg-surface-light rounded-full overflow-hidden">
+                                            <motion.div
+                                                className="h-full bg-fire-gradient rounded-full"
+                                                initial={{ width: 0 }}
+                                                animate={{ width: "83%" }}
+                                                transition={{ duration: 2, delay: 0.7 }}
+                                            />
+                                        </div>
+                                        <span className="font-mono text-xs text-primary">EW60</span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-sm text-muted-foreground">{t("standard")}</span>
+                                    <span className="font-mono text-xs text-muted-foreground">EN 13501-2</span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-sm text-muted-foreground">{t("certifiedBy")}</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="px-2 py-0.5 text-xs font-mono bg-primary/10 text-primary rounded">CE</span>
+                                        <span className="px-2 py-0.5 text-xs font-mono bg-primary/10 text-primary rounded">ISO</span>
+                                        <span className="px-2 py-0.5 text-xs font-mono bg-primary/10 text-primary rounded">TSE</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Fire line separator */}
+                            <div className="fire-line" />
+
+                            {/* Showcase label */}
+                            <div className="flex items-center justify-between">
+                                <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">
+                                    {t("advancedEngineering")}
+                                </span>
+                                <div className="flex items-center gap-1.5">
+                                    <div className="w-2 h-2 rounded-full bg-primary" />
+                                    <div className="w-2 h-2 rounded-full bg-fire-light" />
+                                    <div className="w-2 h-2 rounded-full bg-caution" />
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+
+                {/* Bottom Stats Bar */}
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.6 }}
+                    className="mt-16 lg:mt-24"
+                >
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        {STATISTICS.map((stat, i) => (
+                            <div key={i} className="glass rounded-xl p-5 text-center hover-glow transition-all duration-300">
+                                <div className="text-3xl font-display font-bold text-fire-gradient mb-1">
+                                    {stat.value}{stat.suffix || ""}
+                                </div>
+                                <div className="text-xs text-muted-foreground uppercase tracking-wider">
+                                    {(stat.label as Record<string, string>)[locale] || stat.label.tr}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </motion.div>
+            </div>
         </section>
     );
 }

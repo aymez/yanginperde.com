@@ -1,337 +1,249 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Link } from "@/i18n/routing";
-import { useTranslations, useLocale } from "next-intl";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { usePathname } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
-import MobileMenu from "./MobileMenu";
-import Logo from "./Logo";
-import LanguageSwitcher from "./LanguageSwitcher";
-import { getFireSystemCategories, getSmokeSystemCategories, getProductSlugByCategory, searchProducts } from "@/data/products";
-import { Locale } from "@/i18n/config";
+import { useTranslations, useLocale } from "next-intl";
+import { Link, usePathname } from "@/i18n/routing";
+import { Logo } from "./Logo";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { MobileMenu } from "./MobileMenu";
+import { TopBar } from "./TopBar";
+import { categories, mainCategories } from "@/data/products";
+import { EXTERNAL_LINKS } from "@/lib/constants";
 
-// Helper function to get localized content with fallback
-function getLocalized<T>(obj: Record<string, T> | undefined, locale: Locale): T | undefined {
-    if (!obj) return undefined;
-    return obj[locale] || obj["tr"] || obj["en"];
-}
-
-export default function Header() {
+export function Header() {
     const t = useTranslations("nav");
-    const tCat = useTranslations("categories");
-    const pathname = usePathname();
     const locale = useLocale();
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isProductsOpen, setIsProductsOpen] = useState(false);
-    const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
+    const pathname = usePathname();
+    const [scrolled, setScrolled] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [productsOpen, setProductsOpen] = useState(false);
 
-    // Refs for click outside
-    const navRef = useRef<HTMLDivElement>(null);
-    const searchInputRef = useRef<HTMLInputElement>(null);
-
-    const fireSystemCategories = getFireSystemCategories();
-    const smokeSystemCategories = getSmokeSystemCategories();
-
-    // Scroll handler
     useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 10);
+        const handleScroll = () => setScrolled(window.scrollY > 20);
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Click outside handler
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (navRef.current && !navRef.current.contains(event.target as Node)) {
-                setIsProductsOpen(false);
-                setIsSearchOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
-    // Search focus
-    useEffect(() => {
-        if (isSearchOpen && searchInputRef.current) searchInputRef.current.focus();
-    }, [isSearchOpen]);
-
-    // Close on route change
-    useEffect(() => {
-        setIsMobileMenuOpen(false);
-        setIsProductsOpen(false);
-        setIsSearchOpen(false);
+        setMobileMenuOpen(false);
+        setProductsOpen(false);
     }, [pathname]);
 
-    // Keyboard shortcuts
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === "k") {
-                e.preventDefault();
-                setIsSearchOpen(true);
-            }
-            if (e.key === "Escape") {
-                setIsSearchOpen(false);
-                setIsProductsOpen(false);
-            }
-        };
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, []);
+    const fireCategories = categories.filter((c) => c.mainCategory === "yangin-sistemleri");
+    const smokeCategories = categories.filter((c) => c.mainCategory === "duman-sistemleri");
 
-    const searchResults = searchQuery.trim() ? searchProducts(searchQuery, locale) : [];
+    const isActive = (href: string) => pathname === href;
 
     return (
-        <header
-            ref={navRef}
-            className={cn(
-                "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-                isScrolled ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-100 py-2" : "bg-white border-b border-transparent py-4"
-            )}
-        >
-            <div className="container mx-auto px-4 md:px-8 flex items-center justify-between">
+        <>
+            <TopBar />
+            <motion.header
+                className={`sticky top-0 z-50 transition-all duration-500 ${scrolled
+                        ? "glass shadow-lg shadow-black/20"
+                        : "bg-background/80 backdrop-blur-sm"
+                    }`}
+                initial={{ y: -100 }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+                {/* Fire accent line */}
+                <div className="fire-line-top" />
 
-                {/* Logo Section */}
-                <div className="flex-shrink-0 z-50">
-                    {/* Logo component already contains a Link, so we don't wrap it */}
-                    <Logo className="h-8 md:h-9" />
-                </div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-between h-16 lg:h-20">
+                        {/* Logo */}
+                        <Link href="/" className="flex items-center gap-3 group">
+                            <div className="relative">
+                                <div className="w-10 h-10 rounded-lg bg-fire-gradient flex items-center justify-center group-hover:glow-fire transition-all duration-300">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor" opacity="0" />
+                                        <path d="M13.5 0.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z" fill="currentColor" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div>
+                                <span className="font-display text-lg font-bold text-foreground tracking-wider">
+                                    YANGIN<span className="text-primary"> PERDE</span>
+                                </span>
+                            </div>
+                        </Link>
 
-                {/* Desktop Navigation */}
-                <nav className="hidden lg:flex items-center gap-8">
-                    <Link
-                        href="/"
-                        className={cn(
-                            "text-sm font-medium transition-colors",
-                            pathname === "/" ? "text-slate-900 font-semibold" : "text-slate-500 hover:text-slate-900"
-                        )}
-                    >
-                        {t("home")}
-                    </Link>
+                        {/* Desktop Navigation */}
+                        <nav className="hidden lg:flex items-center gap-1">
+                            <Link
+                                href="/"
+                                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isActive("/")
+                                        ? "text-primary bg-primary/10"
+                                        : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
+                                    }`}
+                            >
+                                {t("home")}
+                            </Link>
 
-                    {/* Products Dropdown */}
-                    <div className="relative group">
-                        <button
-                            onClick={() => setIsProductsOpen(!isProductsOpen)}
-                            className={cn(
-                                "flex items-center gap-1 text-sm font-medium transition-colors outline-none",
-                                pathname.includes("/urunler") || isProductsOpen ? "text-slate-900 font-semibold" : "text-slate-500 hover:text-slate-900"
-                            )}
-                        >
-                            {t("products")}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={cn("transition-transform duration-200", isProductsOpen ? "rotate-180" : "")}>
-                                <path d="m6 9 6 6 6-6" />
-                            </svg>
-                        </button>
-
-                        {/* Dropdown Menu */}
-                        <AnimatePresence>
-                            {isProductsOpen && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                    transition={{ duration: 0.15 }}
-                                    className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[640px] bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden p-6 grid grid-cols-2 gap-8"
+                            {/* Products Dropdown */}
+                            <div
+                                className="relative"
+                                onMouseEnter={() => setProductsOpen(true)}
+                                onMouseLeave={() => setProductsOpen(false)}
+                            >
+                                <button
+                                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 flex items-center gap-1.5 ${pathname.startsWith("/urunler")
+                                            ? "text-primary bg-primary/10"
+                                            : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
+                                        }`}
                                 >
-                                    {/* Outdoor */}
-                                    <div>
-                                        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-50">
-                                            <span className="font-semibold text-slate-900 text-sm tracking-wide">{tCat("fireSystems")}</span>
-                                        </div>
-                                        <div className="flex flex-col gap-1">
-                                            {fireSystemCategories.map((cat) => (
-                                                <Link
-                                                    key={cat.slug}
-                                                    href={`/urunler/${getProductSlugByCategory(cat.slug)}`}
-                                                    onClick={() => setIsProductsOpen(false)}
-                                                    className="px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-md transition-colors block text-left"
-                                                >
-                                                    {getLocalized(cat.name, locale as Locale)}
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Indoor */}
-                                    <div>
-                                        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-50">
-                                            <span className="font-semibold text-slate-900 text-sm tracking-wide">{tCat("smokeSystems")}</span>
-                                        </div>
-                                        <div className="flex flex-col gap-1">
-                                            {smokeSystemCategories.map((cat) => (
-                                                <Link
-                                                    key={cat.slug}
-                                                    href={`/urunler/${getProductSlugByCategory(cat.slug)}`}
-                                                    onClick={() => setIsProductsOpen(false)}
-                                                    className="px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-md transition-colors block text-left"
-                                                >
-                                                    {getLocalized(cat.name, locale as Locale)}
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Footer Link */}
-                                    <div className="col-span-2 pt-2 border-t border-slate-50">
-                                        <Link
-                                            href="/ozel-cozumler"
-                                            onClick={() => setIsProductsOpen(false)}
-                                            className="flex items-center justify-between p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors group"
-                                        >
-                                            <div>
-                                                <span className="block text-sm font-semibold text-slate-900">{t("customSolutions")}</span>
-                                                <span className="text-xs text-slate-500">Özel projeleriniz için mühendislik desteği</span>
-                                            </div>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400 group-hover:text-slate-900 transition-colors"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
-                                        </Link>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-
-                    <Link
-                        href="/referanslar"
-                        className={cn(
-                            "text-sm font-medium transition-colors",
-                            pathname === "/referanslar" ? "text-slate-900 font-semibold" : "text-slate-500 hover:text-slate-900"
-                        )}
-                    >
-                        {t("projects")}
-                    </Link>
-
-                    <Link
-                        href="/hakkimizda"
-                        className={cn(
-                            "text-sm font-medium transition-colors",
-                            pathname === "/hakkimizda" ? "text-slate-900 font-semibold" : "text-slate-500 hover:text-slate-900"
-                        )}
-                    >
-                        {t("about")}
-                    </Link>
-
-                    <Link
-                        href="/iletisim"
-                        className={cn(
-                            "text-sm font-medium transition-colors",
-                            pathname === "/iletisim" ? "text-slate-900 font-semibold" : "text-slate-500 hover:text-slate-900"
-                        )}
-                    >
-                        {t("contact")}
-                    </Link>
-                </nav>
-
-                {/* Right Actions */}
-                <div className="hidden lg:flex items-center gap-4">
-                    {/* Search Trigger */}
-                    <button
-                        onClick={() => setIsSearchOpen(true)}
-                        className="text-slate-400 hover:text-slate-900 transition-colors"
-                        aria-label="Search"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
-                    </button>
-
-                    <div className="h-4 w-[1px] bg-slate-200"></div>
-
-                    <LanguageSwitcher variant="dark" />
-
-                    <Link href="/teklif-al">
-                        <button className="px-5 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-md shadow-sm hover:bg-slate-800 transition-colors">
-                            {t("getQuote")}
-                        </button>
-                    </Link>
-                </div>
-
-                {/* Mobile Menu Toggle */}
-                <button
-                    onClick={() => setIsMobileMenuOpen(true)}
-                    className="lg:hidden p-2 text-slate-900"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                </button>
-            </div>
-
-            {/* Mobile Menu */}
-            <AnimatePresence>
-                {isMobileMenuOpen && (
-                    <MobileMenu
-                        onClose={() => setIsMobileMenuOpen(false)}
-                        onSearch={() => setIsSearchOpen(true)}
-                    />
-                )}
-            </AnimatePresence>
-
-            {/* Search Modal */}
-            <AnimatePresence>
-                {isSearchOpen && (
-                    <div className="fixed inset-0 z-[100] flex items-start justify-center pt-24 px-4">
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={() => setIsSearchOpen(false)}
-                            className="absolute inset-0 bg-slate-900/20 backdrop-blur-sm"
-                        />
-                        <motion.div
-                            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                            transition={{ duration: 0.2 }}
-                            className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden ring-1 ring-black/5"
-                        >
-                            <div className="flex items-center p-4 border-b border-slate-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400 mr-3"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
-                                <input
-                                    ref={searchInputRef}
-                                    type="text"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    placeholder={locale === "tr" ? "Aramak için yazın..." : "Type to search..."}
-                                    className="flex-1 bg-transparent border-none outline-none text-slate-900 placeholder:text-slate-400 text-lg"
-                                />
-                                <button onClick={() => setIsSearchOpen(false)} className="p-1 hover:bg-slate-100 rounded-md text-slate-400 hover:text-slate-600 transition-colors">
-                                    <span className="text-xs font-mono border border-slate-200 rounded px-1.5 py-0.5">ESC</span>
+                                    {t("products")}
+                                    <svg
+                                        className={`w-4 h-4 transition-transform duration-300 ${productsOpen ? "rotate-180" : ""}`}
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
                                 </button>
+
+                                <AnimatePresence>
+                                    {productsOpen && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="absolute top-full left-0 mt-2 w-[520px] glass rounded-xl p-4 shadow-2xl shadow-black/30"
+                                        >
+                                            <div className="grid grid-cols-2 gap-4">
+                                                {/* Fire Systems */}
+                                                <div>
+                                                    <div className="flex items-center gap-2 mb-3 px-2">
+                                                        <div className="w-2 h-2 rounded-full bg-fire-gradient" />
+                                                        <span className="text-xs font-display font-bold text-primary uppercase tracking-wider">
+                                                            {t("fireSystems")}
+                                                        </span>
+                                                    </div>
+                                                    {fireCategories.map((cat) => (
+                                                        <Link
+                                                            key={cat.slug}
+                                                            href={`/urunler/${cat.slug}`}
+                                                            className="block px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-surface-light transition-all duration-200"
+                                                        >
+                                                            {(cat.name as Record<string, string>)[locale] || cat.name.tr}
+                                                        </Link>
+                                                    ))}
+                                                </div>
+
+                                                {/* Smoke Systems */}
+                                                <div>
+                                                    <div className="flex items-center gap-2 mb-3 px-2">
+                                                        <div className="w-2 h-2 rounded-full bg-smoke" />
+                                                        <span className="text-xs font-display font-bold text-smoke uppercase tracking-wider">
+                                                            {t("smokeSystems")}
+                                                        </span>
+                                                    </div>
+                                                    {smokeCategories.map((cat) => (
+                                                        <Link
+                                                            key={cat.slug}
+                                                            href={`/urunler/${cat.slug}`}
+                                                            className="block px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-surface-light transition-all duration-200"
+                                                        >
+                                                            {(cat.name as Record<string, string>)[locale] || cat.name.tr}
+                                                        </Link>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="mt-3 pt-3 border-t border-border">
+                                                <Link
+                                                    href="/urunler"
+                                                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-primary hover:bg-primary/10 transition-all duration-200 font-medium"
+                                                >
+                                                    <span>{t("allProducts")}</span>
+                                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                </Link>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </div>
 
-                            {searchQuery && (
-                                <div className="max-h-[60vh] overflow-y-auto p-2 bg-slate-50/50">
-                                    {searchResults.length > 0 ? (
-                                        <div className="space-y-1">
-                                            {searchResults.map((product) => (
-                                                <Link
-                                                    key={product.id}
-                                                    href={`/urunler/${product.slug}`}
-                                                    onClick={() => { setIsSearchOpen(false); setSearchQuery(""); }}
-                                                    className="flex items-center gap-4 p-3 rounded-lg hover:bg-white hover:shadow-sm transition-all border border-transparent hover:border-slate-100"
-                                                >
-                                                    <div className="w-10 h-10 rounded-md bg-slate-100 flex items-center justify-center text-slate-500">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg>
-                                                    </div>
-                                                    <div>
-                                                        <h4 className="font-semibold text-slate-900">{getLocalized(product.name, locale as Locale)}</h4>
-                                                        <p className="text-xs text-slate-500">{getLocalized(product.shortDescription, locale as Locale)}</p>
-                                                    </div>
-                                                </Link>
-                                            ))}
-                                        </div>
+                            <Link
+                                href="/ozel-cozumler"
+                                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isActive("/ozel-cozumler")
+                                        ? "text-primary bg-primary/10"
+                                        : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
+                                    }`}
+                            >
+                                {t("customSolutions")}
+                            </Link>
+
+                            <Link
+                                href="/projeler"
+                                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isActive("/projeler")
+                                        ? "text-primary bg-primary/10"
+                                        : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
+                                    }`}
+                            >
+                                {t("projects")}
+                            </Link>
+
+                            <Link
+                                href="/hakkimizda"
+                                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isActive("/hakkimizda")
+                                        ? "text-primary bg-primary/10"
+                                        : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
+                                    }`}
+                            >
+                                {t("about")}
+                            </Link>
+
+                            <Link
+                                href="/iletisim"
+                                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isActive("/iletisim")
+                                        ? "text-primary bg-primary/10"
+                                        : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
+                                    }`}
+                            >
+                                {t("contact")}
+                            </Link>
+                        </nav>
+
+                        {/* Right Side */}
+                        <div className="flex items-center gap-3">
+                            <LanguageSwitcher />
+
+                            <Link
+                                href="/teklif-al"
+                                className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-fire-gradient text-white text-sm font-semibold rounded-lg hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02]"
+                            >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                {t("getQuote")}
+                            </Link>
+
+                            {/* Mobile Menu Button */}
+                            <button
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                className="lg:hidden p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-light transition-colors"
+                                aria-label="Toggle menu"
+                            >
+                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    {mobileMenuOpen ? (
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                     ) : (
-                                        <div className="p-8 text-center text-slate-400">
-                                            {locale === "tr" ? "Sonuç bulunamadı." : "No results found."}
-                                        </div>
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                                     )}
-                                </div>
-                            )}
-                        </motion.div>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
-                )}
-            </AnimatePresence>
-        </header>
+                </div>
+            </motion.header>
+
+            <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+        </>
     );
 }

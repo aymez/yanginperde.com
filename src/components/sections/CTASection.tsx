@@ -1,47 +1,80 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
-export default function CTASection() {
+export function CTASection() {
     const t = useTranslations("cta");
 
     return (
-        <section className="relative py-24 md:py-32 bg-slate-50 text-foreground overflow-hidden border-t border-slate-200">
+        <section className="relative py-24 lg:py-32 overflow-hidden">
+            {/* Fire gradient background */}
+            <div className="absolute inset-0 bg-fire-gradient opacity-90" />
+            <div className="absolute inset-0 bg-grid-pattern" />
 
-            <div className="container relative z-10 px-4 md:px-8 mx-auto text-center flex flex-col items-center">
+            {/* Ember particles */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {[...Array(8)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute w-1.5 h-1.5 rounded-full bg-white/30"
+                        initial={{
+                            x: Math.random() * 100 + "%",
+                            y: "100%",
+                            opacity: 0,
+                        }}
+                        animate={{
+                            y: "-10%",
+                            opacity: [0, 0.8, 0],
+                        }}
+                        transition={{
+                            duration: 3 + Math.random() * 4,
+                            repeat: Infinity,
+                            delay: Math.random() * 5,
+                        }}
+                    />
+                ))}
+            </div>
 
-                {/* Status Indicator */}
-                <div className="inline-flex items-center gap-2 bg-white border border-slate-200 px-4 py-2 rounded-full mb-10 shadow-sm">
-                    <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    <span className="text-slate-600 font-bold text-xs uppercase tracking-wider">{t("acceptingProjects")}</span>
-                </div>
+            <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                >
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full mb-8 backdrop-blur-sm">
+                        <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                        <span className="text-xs font-medium text-white uppercase tracking-wider">
+                            {t("acceptingProjects")}
+                        </span>
+                    </div>
 
-                {/* Main Heading */}
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-slate-900 mb-6 leading-tight max-w-4xl mx-auto">
-                    {t("title") || "Ready to secure your architecture?"}
-                </h2>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white mb-6">
+                        {t("title")}
+                    </h2>
+                    <p className="text-lg text-white/80 mb-10 max-w-xl mx-auto">
+                        {t("subtitle")}
+                    </p>
 
-                <p className="text-slate-500 text-lg max-w-2xl mx-auto mb-12 font-normal leading-relaxed">
-                    {t("subtitle") || "Get a technical consultation and quote for your fire safety requirements today."}
-                </p>
-
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
-                    <Link href="/iletisim" className="w-full sm:w-auto">
-                        <button className="px-10 py-5 bg-primary text-white rounded-xl font-bold text-lg tracking-wide hover:bg-red-700 transition-colors shadow-lg shadow-red-500/20 w-full sm:min-w-[200px]">
-                            {t("button") || "Get a Quote"}
-                        </button>
-                    </Link>
-                    <Link href="/urunler" className="w-full sm:w-auto">
-                        <button className="px-10 py-5 bg-white text-slate-700 rounded-xl font-bold text-lg tracking-wide border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-sm w-full sm:min-w-[200px]">
-                            {t("secondaryButton") || "View Systems"}
-                        </button>
-                    </Link>
-                </div>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <Link
+                            href="/iletisim"
+                            className="inline-flex items-center gap-2 px-8 py-4 bg-white text-fire-dark font-bold rounded-xl hover:bg-white/90 hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
+                        >
+                            {t("button")}
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </Link>
+                        <Link
+                            href="/urunler"
+                            className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 text-white font-semibold rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300 border border-white/20"
+                        >
+                            {t("secondaryButton")}
+                        </Link>
+                    </div>
+                </motion.div>
             </div>
         </section>
     );

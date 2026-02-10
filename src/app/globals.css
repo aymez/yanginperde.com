@@ -1,55 +1,61 @@
 @import "tailwindcss";
 
 @theme {
-    /* User-Friendly Modern Theme - Slate & Rounded */
-    --color-background: #ffffff;
-    /* Keeping clean white for main bg */
-    --color-foreground: #0f172a;
-    /* Slate 900 */
+    /* DARK INDUSTRIAL FIRE SAFETY THEME */
+    --color-background: #0A0A0F;
+    --color-foreground: #EDF2F4;
 
-    --color-primary: #D92323;
-    /* Safety Red - Unchanged */
+    --color-primary: #E85D04;
+    --color-primary-light: #F48C06;
+    --color-primary-dark: #D00000;
     --color-primary-foreground: #ffffff;
 
-    --color-secondary: #f1f5f9;
-    /* Slate 100 */
-    --color-secondary-foreground: #0f172a;
+    --color-secondary: #1A1A2E;
+    --color-secondary-foreground: #EDF2F4;
 
-    --color-muted: #f8fafc;
-    /* Slate 50 */
-    --color-muted-foreground: #64748b;
-    /* Slate 500 */
+    --color-muted: #12121A;
+    --color-muted-foreground: #8D99AE;
 
-    --color-accent: #f1f5f9;
-    /* Slate 100 */
-    --color-accent-foreground: #0f172a;
+    --color-accent: #2B2D42;
+    --color-accent-foreground: #EDF2F4;
 
-    --color-destructive: #ef4444;
+    --color-destructive: #D00000;
     --color-destructive-foreground: #ffffff;
 
-    --color-border: #e2e8f0;
-    /* Slate 200 */
-    --color-input: #e2e8f0;
-    --color-ring: #D92323;
+    --color-border: #2B2D42;
+    --color-input: #1A1A2E;
+    --color-ring: #E85D04;
 
-    --color-anthracite: #334155;
-    /* Slate 700 */
-    --color-silver: #e2e8f0;
-    --color-concrete: #f8fafc;
-    --color-carbon: #1e293b;
-    /* Slate 800 */
-    --color-caution: #EAB308;
+    /* Fire Safety Custom Colors */
+    --color-fire: #E85D04;
+    --color-fire-light: #F48C06;
+    --color-fire-dark: #D00000;
+    --color-ember: #DC2F02;
+    --color-smoke: #8D99AE;
+    --color-steel: #2B2D42;
+    --color-carbon: #0D0D14;
+    --color-silver: #C4CDD5;
+    --color-surface: #13131D;
+    --color-surface-light: #1E1E2E;
+    --color-caution: #F48C06;
 
-    --font-display: var(--font-oswald), sans-serif;
-    --font-sans: var(--font-barlow), sans-serif;
+    /* Typography */
+    --font-display: var(--font-space-grotesk), sans-serif;
+    --font-sans: var(--font-inter), sans-serif;
     --font-mono: var(--font-mono), monospace;
 
-    /* Friendly Roundness */
+    /* Roundness */
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 12px;
     --radius-xl: 16px;
     --radius-2xl: 24px;
+}
+
+/* Override Tailwind v4 built-in defaults for background/foreground */
+:root {
+    --color-background: #0A0A0F !important;
+    --color-foreground: #EDF2F4 !important;
 }
 
 @layer base {
@@ -58,10 +64,9 @@
     }
 
     body {
-        @apply bg-background text-foreground font-sans leading-relaxed selection:bg-primary/20 selection:text-primary;
+        @apply bg-background text-foreground font-sans leading-relaxed selection:bg-primary/30 selection:text-primary-light;
     }
 
-    /* Headings */
     h1,
     h2,
     h3,
@@ -69,26 +74,99 @@
     h5,
     h6 {
         @apply font-display font-bold tracking-tight text-foreground;
-        /* Removed 'uppercase' global enforcement for a friendlier interaction, 
-           will apply uppercase selectively in components where needed for brand */
     }
 }
 
 @layer utilities {
 
-    /* Light Grid Pattern */
-    .bg-grid-pattern {
-        background-size: 40px 40px;
-        background-image: linear-gradient(to right, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+    /* Fire Gradient */
+    .bg-fire-gradient {
+        background: linear-gradient(135deg, #D00000, #E85D04, #F48C06);
     }
 
+    .bg-fire-gradient-hover {
+        background: linear-gradient(135deg, #E85D04, #F48C06, #FAA307);
+    }
+
+    .text-fire-gradient {
+        background: linear-gradient(135deg, #E85D04, #F48C06);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Glass Morphism */
+    .glass {
+        background: rgba(26, 26, 46, 0.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(237, 242, 244, 0.08);
+    }
+
+    .glass-light {
+        background: rgba(43, 45, 66, 0.4);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(237, 242, 244, 0.06);
+    }
+
+    .glass-fire {
+        background: rgba(232, 93, 4, 0.08);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(232, 93, 4, 0.15);
+    }
+
+    /* Grid Pattern */
+    .bg-grid-pattern {
+        background-size: 40px 40px;
+        background-image:
+            linear-gradient(to right, rgba(237, 242, 244, 0.03) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(237, 242, 244, 0.03) 1px, transparent 1px);
+    }
+
+    .bg-grid-fire {
+        background-size: 60px 60px;
+        background-image:
+            linear-gradient(to right, rgba(232, 93, 4, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(232, 93, 4, 0.05) 1px, transparent 1px);
+    }
+
+    /* Glow Effects */
+    .glow-fire {
+        box-shadow: 0 0 20px rgba(232, 93, 4, 0.3), 0 0 60px rgba(232, 93, 4, 0.1);
+    }
+
+    .glow-fire-sm {
+        box-shadow: 0 0 10px rgba(232, 93, 4, 0.2);
+    }
+
+    .glow-ember {
+        box-shadow: 0 0 30px rgba(208, 0, 0, 0.2), 0 0 80px rgba(232, 93, 4, 0.1);
+    }
+
+    .text-glow-fire {
+        text-shadow: 0 0 20px rgba(232, 93, 4, 0.5);
+    }
+
+    /* Section Separator */
+    .fire-line {
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #E85D04, #F48C06, #E85D04, transparent);
+    }
+
+    .fire-line-top {
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #D00000, #E85D04, #F48C06, #E85D04, #D00000, transparent);
+    }
+
+    /* Caution Pattern */
     .bg-caution {
         background: repeating-linear-gradient(45deg,
-                #EAB308,
-                #EAB308 10px,
-                #ffffff 10px,
-                #ffffff 20px);
+                #F48C06,
+                #F48C06 10px,
+                #0A0A0F 10px,
+                #0A0A0F 20px);
     }
 
     /* Animations */
@@ -102,7 +180,102 @@
         }
     }
 
+    @keyframes pulse-fire {
+
+        0%,
+        100% {
+            box-shadow: 0 0 20px rgba(232, 93, 4, 0.3);
+        }
+
+        50% {
+            box-shadow: 0 0 40px rgba(232, 93, 4, 0.6);
+        }
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    @keyframes ember-float {
+        0% {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(-100px) scale(0);
+            opacity: 0;
+        }
+    }
+
+    @keyframes gradient-shift {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
     .animate-scan {
         animation: scan 3s linear infinite;
+    }
+
+    .animate-pulse-fire {
+        animation: pulse-fire 2s ease-in-out infinite;
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-ember {
+        animation: ember-float 3s ease-out infinite;
+    }
+
+    .animate-gradient {
+        animation: gradient-shift 8s ease infinite;
+        background-size: 200% 200%;
+    }
+
+    /* Hover border glow */
+    .hover-glow {
+        transition: all 0.3s ease;
+    }
+
+    .hover-glow:hover {
+        border-color: rgba(232, 93, 4, 0.4);
+        box-shadow: 0 0 20px rgba(232, 93, 4, 0.15);
+    }
+
+    /* Custom scrollbar for dark theme */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #0A0A0F;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #2B2D42;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #E85D04;
     }
 }

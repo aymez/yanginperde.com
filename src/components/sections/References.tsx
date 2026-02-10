@@ -1,129 +1,99 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { projects } from "@/data/projects";
 
-export default function References() {
+export function References() {
     const t = useTranslations("references");
+    const locale = useLocale();
 
-    // Placeholder data - in a real app this would come from the CMS/API
-    const projects = [
-        {
-            id: 1,
-            title: "Istanbul Airport",
-            category: t("items.0.category"),
-            image: "/images/projects/airport.jpg",
-            stats: [
-                { label: t("items.0.stats.0.label"), value: t("items.0.stats.0.value") },
-                { label: t("items.0.stats.1.label"), value: t("items.0.stats.1.value") }
-            ]
-        },
-        {
-            id: 2,
-            title: "Vadistanbul Mall",
-            category: t("items.1.category"),
-            image: "/images/projects/mall.jpg",
-            stats: [
-                { label: t("items.1.stats.0.label"), value: t("items.1.stats.0.value") },
-                { label: t("items.1.stats.1.label"), value: t("items.1.stats.1.value") }
-            ]
-        },
-        {
-            id: 3,
-            title: "City Hospital",
-            category: t("items.2.category"),
-            image: "/images/projects/hospital.jpg",
-            stats: [
-                { label: t("items.2.stats.0.label"), value: t("items.2.stats.0.value") },
-                { label: t("items.2.stats.1.label"), value: t("items.2.stats.1.value") }
-            ]
-        },
-        {
-            id: 4,
-            title: "Tech Tower",
-            category: t("items.3.category"),
-            image: "/images/projects/tower.jpg",
-            stats: [
-                { label: t("items.3.stats.0.label"), value: t("items.3.stats.0.value") },
-                { label: t("items.3.stats.1.label"), value: t("items.3.stats.1.value") }
-            ]
-        }
-    ];
+    const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
 
     return (
-        <section className="py-24 bg-white border-t border-slate-100 overflow-hidden">
-            <div className="container mx-auto px-4 md:px-8">
+        <section className="relative py-24 lg:py-32 bg-surface overflow-hidden">
+            <div className="absolute inset-0 bg-grid-pattern" />
 
-                {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-                    <div>
-                        <span className="text-primary font-bold tracking-widest uppercase mb-4 block text-sm">
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Section Header */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-16"
+                >
+                    <div className="inline-flex items-center gap-2 px-4 py-2 glass-fire rounded-full mb-6">
+                        <span className="text-xs font-medium text-primary uppercase tracking-wider">
                             {t("globalApplications")}
                         </span>
-                        <h2 className="text-4xl lg:text-5xl font-display font-bold text-slate-900 leading-tight">
-                            {t("selected")} <span className="text-slate-400">{t("projects")}</span>
-                        </h2>
                     </div>
-                    <Link href="/projeler" className="hidden md:block">
-                        <button className="px-6 py-3 bg-slate-50 text-slate-900 rounded-lg hover:bg-slate-100 transition-colors font-bold text-sm">
-                            {t("viewAllProjects")}
-                        </button>
-                    </Link>
-                </div>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-4">
+                        <span className="text-foreground">{t("selected")} </span>
+                        <span className="text-fire-gradient">{t("projects")}</span>
+                    </h2>
+                    <p className="text-muted-foreground max-w-xl mx-auto">{t("subtitle")}</p>
+                </motion.div>
 
-                {/* Project Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {projects.map((project, index) => (
+                {/* Project Cards */}
+                <div className="grid sm:grid-cols-2 gap-6 mb-12">
+                    {featuredProjects.map((project, i) => (
                         <motion.div
                             key={project.id}
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: index * 0.1 }}
-                            className="group relative aspect-video bg-slate-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
+                            transition={{ duration: 0.5, delay: i * 0.1 }}
                         >
-                            {/* Image Placeholder / Background */}
-                            <div className="absolute inset-0 bg-slate-200 group-hover:scale-105 transition-transform duration-700">
-                                {/* If image exists, render it. For now, solid color with texture */}
-                                <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-                            </div>
-
-                            {/* Overlay Content */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-8 flex flex-col justify-end">
-
-                                <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                                    <span className="text-white/80 text-xs font-bold uppercase tracking-wider mb-2 block">
-                                        {project.category}
-                                    </span>
-                                    <h3 className="text-2xl font-display font-bold text-white mb-4">
-                                        {project.title}
-                                    </h3>
-
-                                    {/* Stats - visible on hover or always */}
-                                    <div className="grid grid-cols-2 gap-8 border-t border-white/20 pt-4">
-                                        {project.stats.map((stat, i) => (
-                                            <div key={i}>
-                                                <div className="text-white font-mono text-lg font-bold">{stat.value}</div>
-                                                <div className="text-white/60 text-[10px] uppercase tracking-wider">{stat.label}</div>
+                            <Link href={`/projeler/${project.slug}`}>
+                                <div className="group glass rounded-xl overflow-hidden hover-glow transition-all duration-300 cursor-pointer">
+                                    {/* Image */}
+                                    <div className="relative h-56 overflow-hidden">
+                                        <img
+                                            src={project.images[0]}
+                                            alt={(project.title as Record<string, string>)[locale] || project.title.tr}
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-carbon via-transparent to-transparent" />
+                                        <div className="absolute bottom-4 left-4 right-4">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-primary/20 text-primary uppercase">
+                                                    {project.year}
+                                                </span>
+                                                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-surface-light/80 text-muted-foreground uppercase">
+                                                    {project.location}
+                                                </span>
                                             </div>
-                                        ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="p-6">
+                                        <h3 className="font-display text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                                            {(project.title as Record<string, string>)[locale] || project.title.tr}
+                                        </h3>
+                                        <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                                            {(project.description as Record<string, string>)[locale] || project.description.tr}
+                                        </p>
                                     </div>
                                 </div>
-
-                            </div>
+                            </Link>
                         </motion.div>
                     ))}
                 </div>
 
-                <div className="mt-8 md:hidden text-center">
-                    <Link href="/projeler">
-                        <button className="px-6 py-3 bg-slate-100 text-slate-900 rounded-lg font-bold text-sm w-full">
-                            {t("viewAllProjects")}
-                        </button>
+                {/* View All Button */}
+                <div className="text-center">
+                    <Link
+                        href="/projeler"
+                        className="inline-flex items-center gap-2 px-6 py-3 glass text-foreground text-sm font-medium rounded-xl hover:bg-surface-light hover:text-primary transition-all duration-300"
+                    >
+                        {t("viewAllProjects")}
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
                     </Link>
                 </div>
-
             </div>
         </section>
     );

@@ -1,134 +1,114 @@
 "use client";
 
-import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
 import { motion } from "framer-motion";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { Locale } from "@/i18n/config";
+import { mainCategories, categories } from "@/data/products";
+import { useState } from "react";
 
-function getLocalized<T>(obj: Record<string, T> | undefined, locale: Locale): T | undefined {
-    if (!obj) return undefined;
-    if (typeof obj === 'string') return obj;
-    return obj[locale] || obj["tr"] || obj["en"];
-}
-
-const mainCategoryData = [
-    {
-        slug: "dis-mekan",
-        href: "/dis-mekan",
-        image: "/images/products/fire-curtain-vertical.png",
-        code: "FC-E120",
-        name: {
-            tr: "Yangın Sistemleri",
-            en: "Fire Systems",
-        },
-        description: {
-            tr: "E120 ve E Sınıfı Sertifikalı Yangın Perdeleri",
-            en: "E120 and E Class Certified Fire Curtains",
-        },
-    },
-    {
-        slug: "ic-mekan",
-        href: "/ic-mekan",
-        image: "/images/products/smoke-curtain-auto.png",
-        code: "SC-DH60",
-        name: {
-            tr: "Duman Kontrol",
-            en: "Smoke Control",
-        },
-        description: {
-            tr: "Otomatik ve Sabit Duman Perdeleri",
-            en: "Automatic and Fixed Smoke Curtains",
-        },
-    },
-    {
-        slug: "ozel-cozumler",
-        href: "/ozel-cozumler",
-        image: "/images/products/fire-door.png",
-        code: "CS-CUSTOM",
-        name: {
-            tr: "Özel Çözümler",
-            en: "Custom Solutions",
-        },
-        description: {
-            tr: "Endüstriyel Kapılar ve Konveyör Sistemleri",
-            en: "Industrial Doors and Conveyor Systems",
-        },
-    },
-];
-
-export default function ProductCategories() {
+export function ProductCategories() {
     const t = useTranslations("categories");
-    const locale = useLocale() as Locale;
+    const locale = useLocale();
+    const [activeTab, setActiveTab] = useState<string>("yangin-sistemleri");
+
+    const filteredCategories = categories.filter((c) => c.mainCategory === activeTab);
 
     return (
-        <section className="py-24 md:py-32 bg-slate-50 relative border-t border-slate-200">
+        <section className="relative py-24 lg:py-32 bg-background overflow-hidden">
+            <div className="absolute inset-0 bg-grid-fire opacity-30" />
 
-            {/* Header */}
-            <div className="container mx-auto px-4 md:px-8 mb-16 flex flex-col md:flex-row justify-between items-end gap-8">
-                <div>
-                    <span className="text-primary font-bold tracking-widest uppercase mb-4 block text-sm">
-                        {t("systemCatalog")}
-                    </span>
-                    <h2 className="text-4xl lg:text-5xl font-display font-bold text-slate-900 leading-tight">
-                        {t("engineered")} <span className="text-slate-400">{t("solutions")}</span>
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Section Header */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-12"
+                >
+                    <div className="inline-flex items-center gap-2 px-4 py-2 glass-fire rounded-full mb-6">
+                        <span className="text-xs font-medium text-primary uppercase tracking-wider">
+                            {t("systemCatalog")}
+                        </span>
+                    </div>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-4">
+                        <span className="text-foreground">{t("engineered")} </span>
+                        <span className="text-fire-gradient">{t("solutions")}</span>
                     </h2>
-                </div>
-                <div className="flex items-center gap-4">
-                    <div className="h-[1px] w-24 bg-slate-300 hidden md:block"></div>
-                    <span className="text-xs font-bold text-slate-500 uppercase">ISO 9001:2015 / EN 1634-1</span>
-                </div>
-            </div>
+                    <p className="text-muted-foreground max-w-2xl mx-auto">{t("subtitle")}</p>
+                </motion.div>
 
-            <div className="container mx-auto px-4 md:px-8 relative z-10">
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {mainCategoryData.map((category, index) => (
+                {/* Tab Switcher */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="flex justify-center gap-3 mb-12"
+                >
+                    {mainCategories.map((mc) => (
+                        <button
+                            key={mc.slug}
+                            onClick={() => setActiveTab(mc.slug)}
+                            className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === mc.slug
+                                    ? "bg-fire-gradient text-white shadow-lg shadow-primary/30"
+                                    : "glass text-muted-foreground hover:text-foreground"
+                                }`}
+                        >
+                            {(mc.name as Record<string, string>)[locale] || mc.name.tr}
+                        </button>
+                    ))}
+                </motion.div>
+
+                {/* Category Cards */}
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredCategories.map((cat, i) => (
                         <motion.div
-                            key={category.slug}
-                            initial={{ opacity: 0, y: 20 }}
+                            key={cat.slug}
+                            initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="group relative bg-white border border-slate-200 rounded-2xl hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col overflow-hidden"
+                            transition={{ duration: 0.5, delay: i * 0.1 }}
                         >
-                            <Link href={category.href} className="flex-1 flex flex-col">
-
-                                {/* Image Container */}
-                                <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden border-b border-slate-100">
-                                    <Image
-                                        src={category.image}
-                                        alt={getLocalized(category.name, locale) || "System"}
-                                        fill
-                                        className="object-cover opacity-90 group-hover:scale-105 transition-transform duration-700 hover:grayscale-0 grayscale"
-                                        sizes="(max-width: 768px) 100vw, 33vw"
-                                    />
-
-                                    {/* Corner ID - Softened */}
-                                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-sm">
-                                        <span className="text-[10px] font-bold text-slate-800 tracking-wider">{category.code}</span>
+                            <Link href={`/urunler/${cat.slug}`}>
+                                <div className="group glass rounded-xl p-6 hover-glow transition-all duration-300 h-full cursor-pointer">
+                                    {/* Icon */}
+                                    <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                                        {cat.icon === "shield" && (
+                                            <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                                        )}
+                                        {cat.icon === "flame" && (
+                                            <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" /></svg>
+                                        )}
+                                        {cat.icon === "door" && (
+                                            <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                                        )}
+                                        {cat.icon === "automatic" && (
+                                            <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                        )}
+                                        {cat.icon === "conveyor" && (
+                                            <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+                                        )}
+                                        {cat.icon === "smoke" && (
+                                            <svg className="w-7 h-7 text-smoke" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
+                                        )}
+                                        {cat.icon === "fixed" && (
+                                            <svg className="w-7 h-7 text-smoke" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                                        )}
                                     </div>
-                                </div>
 
-                                {/* Content */}
-                                <div className="p-8 flex-1 flex flex-col">
-                                    <div className="mb-3">
-                                        <h3 className="text-xl font-display font-bold text-slate-900 uppercase mb-2 group-hover:text-primary transition-colors">
-                                            {getLocalized(category.name, locale)}
-                                        </h3>
-                                    </div>
-
-                                    <p className="text-sm text-slate-500 font-normal leading-relaxed mb-6 flex-1">
-                                        {getLocalized(category.description, locale)}
+                                    {/* Content */}
+                                    <h3 className="font-display text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+                                        {(cat.name as Record<string, string>)[locale] || cat.name.tr}
+                                    </h3>
+                                    <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                                        {(cat.description as Record<string, string>)[locale] || cat.description.tr}
                                     </p>
 
-                                    <div className="flex items-center justify-between mt-auto pt-6 border-t border-slate-50">
-                                        <span className="text-[11px] font-bold text-slate-500 uppercase group-hover:text-slate-900 transition-colors">{t("viewDetails")}</span>
-                                        <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                                <polyline points="12 5 19 12 12 19"></polyline>
-                                            </svg>
-                                        </div>
+                                    {/* View Details Link */}
+                                    <div className="flex items-center gap-2 text-primary text-sm font-medium group-hover:gap-3 transition-all duration-300">
+                                        <span>{t("viewDetails")}</span>
+                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                        </svg>
                                     </div>
                                 </div>
                             </Link>
