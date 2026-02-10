@@ -40,8 +40,8 @@ export function Header() {
             <TopBar />
             <motion.header
                 className={`sticky top-0 z-50 transition-all duration-500 ${scrolled
-                        ? "glass shadow-lg shadow-black/20"
-                        : "bg-background/80 backdrop-blur-sm"
+                    ? "bg-background shadow-lg shadow-black/30 border-b border-border"
+                    : "bg-background/80 backdrop-blur-sm"
                     }`}
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
@@ -74,8 +74,8 @@ export function Header() {
                             <Link
                                 href="/"
                                 className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isActive("/")
-                                        ? "text-primary bg-primary/10"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
+                                    ? "text-primary bg-primary/10"
+                                    : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
                                     }`}
                             >
                                 {t("home")}
@@ -89,8 +89,8 @@ export function Header() {
                             >
                                 <button
                                     className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 flex items-center gap-1.5 ${pathname.startsWith("/urunler")
-                                            ? "text-primary bg-primary/10"
-                                            : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
+                                        ? "text-primary bg-primary/10"
+                                        : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
                                         }`}
                                 >
                                     {t("products")}
@@ -172,8 +172,8 @@ export function Header() {
                             <Link
                                 href="/ozel-cozumler"
                                 className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isActive("/ozel-cozumler")
-                                        ? "text-primary bg-primary/10"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
+                                    ? "text-primary bg-primary/10"
+                                    : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
                                     }`}
                             >
                                 {t("customSolutions")}
@@ -182,8 +182,8 @@ export function Header() {
                             <Link
                                 href="/projeler"
                                 className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isActive("/projeler")
-                                        ? "text-primary bg-primary/10"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
+                                    ? "text-primary bg-primary/10"
+                                    : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
                                     }`}
                             >
                                 {t("projects")}
@@ -192,8 +192,8 @@ export function Header() {
                             <Link
                                 href="/hakkimizda"
                                 className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isActive("/hakkimizda")
-                                        ? "text-primary bg-primary/10"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
+                                    ? "text-primary bg-primary/10"
+                                    : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
                                     }`}
                             >
                                 {t("about")}
@@ -202,8 +202,8 @@ export function Header() {
                             <Link
                                 href="/iletisim"
                                 className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isActive("/iletisim")
-                                        ? "text-primary bg-primary/10"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
+                                    ? "text-primary bg-primary/10"
+                                    : "text-muted-foreground hover:text-foreground hover:bg-surface-light"
                                     }`}
                             >
                                 {t("contact")}
