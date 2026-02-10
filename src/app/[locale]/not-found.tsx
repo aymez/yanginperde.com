@@ -1,38 +1,43 @@
-import { useTranslations } from "next-intl";
+import { getMessages } from "next-intl/server";
 import Link from "next/link";
 
-export default function NotFound() {
-    const t = useTranslations("common"); // Eğer common yoksa 'Index' veya hata mesajlarına uygun namespace
+export default async function NotFound() {
+    const messages = await getMessages();
 
     return (
-        <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4 bg-cream-light relative overflow-hidden">
-            {/* Arkaplan Deseni */}
-            <div
-                className="absolute inset-0 opacity-[0.03] pointer-events-none"
-                style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231A1A1A' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                }}
-            />
+        <div className="flex flex-col items-center justify-center text-center px-4 relative overflow-hidden py-20 min-h-[60vh]">
+            {/* Arkaplan Efektleri */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-background to-background opacity-40 pointer-events-none" />
+
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-fire-gradient opacity-5 blur-[100px] rounded-full pointer-events-none" />
 
             <div className="relative z-10 max-w-2xl">
-                <h1 className="text-[120px] md:text-[180px] font-display font-light leading-none text-anthracite-dark/10 select-none">
+                <h1 className="text-[120px] md:text-[200px] font-display font-bold leading-none bg-gradient-to-b from-[#D00000] via-[#E85D04] to-transparent bg-clip-text text-transparent select-none drop-shadow-2xl">
                     404
                 </h1>
 
-                <div className="-mt-12 mb-8">
-                    <h2 className="text-2xl md:text-3xl font-display font-medium text-text-dark mb-4">
-                        Sayfa Bulunamadı
+                <div className="-mt-4 md:-mt-12 mb-12">
+                    <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
+                        {(messages as any).notFound?.title || "Sayfa Bulunamadı"}
                     </h2>
-                    <p className="text-text-muted text-lg">
-                        Aradığınız sayfa mevcut değil veya taşınmış olabilir.
+                    <p className="text-muted-foreground text-lg max-w-md mx-auto">
+                        {(messages as any).notFound?.description || "Aradığınız sayfa mevcut değil."}
                     </p>
                 </div>
 
                 <Link
                     href="/"
-                    className="inline-flex items-center justify-center px-8 py-4 bg-anthracite-dark text-white rounded-full font-medium transition-all duration-300 hover:bg-primary hover:shadow-lg hover:-translate-y-1"
+                    className="group relative inline-flex items-center gap-3 px-8 py-4 bg-surface border border-border rounded-xl overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/20"
                 >
-                    Ana Sayfaya Dön
+                    <div className="absolute inset-0 bg-fire-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+
+                    <svg className="w-5 h-5 text-primary transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+
+                    <span className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                        {(messages as any).notFound?.backHome || "Ana Sayfaya Dön"}
+                    </span>
                 </Link>
             </div>
         </div>

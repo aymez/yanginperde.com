@@ -527,5 +527,10 @@
         "learnMore": "Daha Fazla",
         "seeAll": "Tümünü Gör",
         "readMore": "Devamını Oku"
+    },
+    "notFound": {
+        "title": "Sayfa Bulunamadı",
+        "description": "Aradığınız sayfa mevcut değil, silinmiş veya taşınmış olabilir.",
+        "backHome": "Ana Sayfaya Dön"
     }
 }
