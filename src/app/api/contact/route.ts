@@ -8,7 +8,7 @@ const TO_EMAIL = "info@yanginperde.com";
 
 // reCAPTCHA v2 gizli anahtar (sadece sunucuda kullanılır, client'a gönderilmez)
 // Production key - yanginperde.com için
-const RECAPTCHA_SECRET_KEY = "6LfXFmQsAAAAAHhjdTwuid5WFmgwWrYzHfjm7Cmb";
+const RECAPTCHA_SECRET_KEY = "6LcXemYsAAAAAP3nRQ0ylzAxV00J9f7sse6QywfW";
 
 const subjectLabels: Record<string, string> = {
     quote: "Teklif Talebi / Quote Request",

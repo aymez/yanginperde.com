@@ -7,7 +7,7 @@ const YANDEX_PASS = "pnpfvfvjfhjypqly"; // TODO: Güncellenmeli
 const TO_EMAIL = "info@yanginperde.com";
 
 // reCAPTCHA v2 gizli anahtar
-const RECAPTCHA_SECRET_KEY = "6LfXFmQsAAAAAHhjdTwuid5WFmgwWrYzHfjm7Cmb";
+const RECAPTCHA_SECRET_KEY = "6LcXemYsAAAAAP3nRQ0ylzAxV00J9f7sse6QywfW";
 
 const productLabels: Record<string, string> = {
     "zip-screen": "Zip Screen",

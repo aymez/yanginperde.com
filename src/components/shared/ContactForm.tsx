@@ -27,7 +27,7 @@ declare global {
 }
 
 // reCAPTCHA v2 site key (public - production key)
-const RECAPTCHA_SITE_KEY = "6LfXFmQsAAAAACfYiYNA4zSDPU2IhdpZmczqSY8_";
+const RECAPTCHA_SITE_KEY = "6LcXemYsAAAAACCV222CTZIucUda2Mij_wjoMWDX";
 
 const inputClasses = "w-full px-4 py-3.5 bg-surface-light border border-border/50 rounded-xl text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/30 focus:border-primary/50 focus:bg-surface transition-all duration-200";
 
